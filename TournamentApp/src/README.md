@@ -1,6 +1,6 @@
-=============================================================================
-``TournamentApp`` - Tournaments manager application for managers, players and supporters
-=============================================================================
+
+## ``TournamentApp`` - Tournaments manager application for managers, players and supporters
+
 
 
 ### Installation
