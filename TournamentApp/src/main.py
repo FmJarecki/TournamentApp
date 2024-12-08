@@ -1,27 +1,20 @@
-from kivy.app import App
-from kivy.uix.button import Button
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
+from kivymd.app import MDApp
+from kivymd.uix.screenmanager import MDScreenManager
+from kivy.lang import Builder
 
-class MyApp(App):
+from home_screen import HomeScreen
+from teams_screen import TeamListScreen
+from db_handler import generate_fake_data
+
+class KVApp(MDApp):
     def build(self):
-        # Stworzenie głównego layoutu w pionie (BoxLayout)
-        layout = BoxLayout(orientation='vertical')
+        Builder.load_string(HomeScreen.KV)
 
-        # Stworzenie labelki z domyślnym tekstem
-        self.label = Label(text="Hello, Kivy!")
-        layout.add_widget(self.label)
-
-        # Stworzenie przycisku
-        button = Button(text="Click me!")
-        button.bind(on_press=self.on_button_click)
-        layout.add_widget(button)
-
-        return layout
-
-    def on_button_click(self, instance):
-        # Zmiana tekstu w labelce po kliknięciu na przycisk
-        self.label.text = "You clicked the button!"
+        sm = MDScreenManager()
+        sm.add_widget(HomeScreen(name='HomeScreen'))
+        # sm.add_widget(TeamListScreen(name='TeamListScreen'))
+        return sm
 
 if __name__ == '__main__':
-    MyApp().run()
+    generate_fake_data()
+    KVApp().run()
