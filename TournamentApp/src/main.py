@@ -3,7 +3,6 @@ from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
 
 from home_screen import HomeScreen
-from teams_screen import TeamListScreen
 from db_handler import generate_fake_data
 
 class KVApp(MDApp):

@@ -17,7 +17,7 @@ def generate_fake_data():
                 if player not in players:
                     players.append(player)
                     break
-            db.add_user(player, team_name)
+            db.add_user(player, random.randint(1, 99), team_name)
 
     db = TournamentDatabase()
     db.clear_database()
@@ -62,17 +62,18 @@ class TournamentDatabase:
         self.cursor.execute("""
                 CREATE TABLE IF NOT EXISTS users (
                     username TEXT PRIMARY KEY,
+                    number TEXT,
                     team TEXT,
                     FOREIGN KEY (team) REFERENCES teams (team)
                 )
             """)
         self.connection.commit()
 
-    def add_user(self, username, team):
+    def add_user(self, username, number, team):
         try:
             self.cursor.execute(
-                "INSERT INTO users (username, team) VALUES (?, ?)",
-                (username, team)
+                "INSERT INTO users (username, number, team) VALUES (?, ?, ?)",
+                (username, number, team)
             )
             self.connection.commit()
             return True
@@ -86,13 +87,16 @@ class TournamentDatabase:
         except sqlite3.IntegrityError:
             print(f"Team '{team_name}' already exists.")
 
-    def get_teams(self):
+    def get_teams(self) -> list[str]:
         self.cursor.execute("SELECT DISTINCT team FROM users")
         return [row[0] for row in self.cursor.fetchall()]
 
-    def get_team_members(self, team):
-        self.cursor.execute("SELECT username FROM users WHERE team = ?", (team,))
-        return [row[0] for row in self.cursor.fetchall()]
+    def get_team_players(self, team) -> list[str]:
+        self.cursor.execute('SELECT number, username FROM users WHERE team = ?', (team,))
+        return [f'{row[0]}. {row[1]}' for row in self.cursor.fetchall()]
+
+    def get_teams_with_players(self) -> dict[str, list[str]]:
+        return {team: self.get_team_players(team) for team in self.get_teams()}
 
     def get_user_by_username(self, username):
         self.cursor.execute("SELECT * FROM users WHERE username = ?", (username,))

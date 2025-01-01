@@ -1,7 +1,6 @@
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.label import MDLabel
-from kivy.properties import ObjectProperty
-from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.screenmanager import MDScreenManager
 
 from teams_screen import TeamListScreen
 
@@ -81,60 +80,55 @@ class HomeScreen(MDScreen):
             id: main_container
             md_bg_color: 1, 1, 1, 1
             orientation: 'horizontal'
-    
-            MDLabel:
-                text: "Choose option."
-                halign: "center"
-                theme_text_color: "Custom"
-                text_color: 0, 0, 0, 1
+
     '''
 
-    main_container = ObjectProperty()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.screen_manager = MDScreenManager()
 
-    def on_settings_press(self):
-        print("Settings clicked!")
+        self.screen_manager.add_widget(TrophyView(name='trophy'))
+        self.screen_manager.add_widget(ProfileView(name='profile'))
+        self.screen_manager.add_widget(MapView(name='map'))
 
-    def on_search_press(self):
-        print("Search clicked!")
-
-    def on_menu_press(self):
-        print("Menu clicked!")
+        self.main_container.add_widget(self.screen_manager)
 
     def on_trophy_press(self):
-        print("Trophy clicked!")
-        self.change_view(TrophyView())
+        self.screen_manager.current = 'trophy'
 
     def on_teams_press(self):
-        print("Teams clicked!")
-        self.change_view(TeamListScreen())
+        screen_name = 'teams'
+        if screen_name in self.screen_manager.screen_names:
+            screen_to_remove = self.screen_manager.get_screen(screen_name)
+            self.screen_manager.remove_widget(screen_to_remove)
+
+        if 'Player' in self.screen_manager.screen_names:
+            screen_to_remove = self.screen_manager.get_screen('Player')
+            self.screen_manager.remove_widget(screen_to_remove)
+            
+        self.screen_manager.add_widget(TeamListScreen(name=screen_name))
+        self.screen_manager.current = 'teams'
 
     def on_profile_press(self):
-        print("Profile clicked!")
-        self.change_view(ProfileView())
+        self.screen_manager.current = 'profile'
 
     def on_map_press(self):
-        print("Map clicked!")
-        self.change_view(MapView())
-
-    def change_view(self, new_view):
-        self.main_container.clear_widgets()
-
-        self.main_container.add_widget(new_view)
+        self.screen_manager.current = 'map'
 
 
-class TrophyView(MDBoxLayout):
+class TrophyView(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.add_widget(MDLabel(text="Trophy Screen", halign="center"))
 
 
-class ProfileView(MDBoxLayout):
+class ProfileView(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.add_widget(MDLabel(text="Profile Screen", halign="center"))
 
 
-class MapView(MDBoxLayout):
+class MapView(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.add_widget(MDLabel(text="Map Screen", halign="center"))
