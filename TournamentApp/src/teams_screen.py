@@ -10,9 +10,9 @@ class TeamListScreen(MDScreen):
         super().__init__(**kwargs)
         self.db = TournamentDatabase()
         self.selected_team = None
-        self.build_teams_screen()
+        self.build()
 
-    def build_teams_screen(self):
+    def build(self):
         self.clear_widgets()
         teams = self.db.get_teams()
         layout = MDBoxLayout(
@@ -40,7 +40,7 @@ class TeamListScreen(MDScreen):
 
     def team_clicked(self, team_name: str):
         self.selected_team = team_name if self.selected_team != team_name else None
-        self.build_teams_screen()
+        self.build()
 
     def player_clicked(self, player: str):
         player_view = PlayerView(player, name='Player')

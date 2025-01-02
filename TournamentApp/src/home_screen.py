@@ -3,6 +3,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.screenmanager import MDScreenManager
 
 from teams_screen import TeamListScreen
+from map_screen import MapScreen
 
 class HomeScreen(MDScreen):
     KV = '''
@@ -89,7 +90,7 @@ class HomeScreen(MDScreen):
 
         self.screen_manager.add_widget(TrophyView(name='trophy'))
         self.screen_manager.add_widget(ProfileView(name='profile'))
-        self.screen_manager.add_widget(MapView(name='map'))
+        self.screen_manager.add_widget(MapScreen(name='map'))
 
         self.main_container.add_widget(self.screen_manager)
 
@@ -126,9 +127,3 @@ class ProfileView(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.add_widget(MDLabel(text="Profile Screen", halign="center"))
-
-
-class MapView(MDScreen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.add_widget(MDLabel(text="Map Screen", halign="center"))

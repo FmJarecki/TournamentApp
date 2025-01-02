@@ -12,9 +12,9 @@ class PlayerView(MDScreen):
     def __init__(self, player_name: str, **kwargs):
         super().__init__(**kwargs)
         self.player_name = player_name
-        self.build_player_screen()
+        self.build()
 
-    def build_player_screen(self):
+    def build(self):
         layout = MDBoxLayout(
             orientation="vertical",
         )
@@ -39,7 +39,6 @@ class PlayerView(MDScreen):
                 halign='center'
             )
         layout.add_widget(image)
-        print(self.player_name)
         name_label = MDLabel(
             text=self.player_name,
             halign="center"
@@ -49,5 +48,4 @@ class PlayerView(MDScreen):
 
     def handle_back(self, instance):
         self.parent.remove_widget(self)
-        print(self.parent.screen_names)
         self.parent.current = 'teams'
