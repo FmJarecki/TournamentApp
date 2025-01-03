@@ -12,10 +12,3 @@ To install dependecies with `pip`, use:
 ```
 pip install -r requirements.txt
 ```
-
-### Supported widgets and functionalities:
-
-| Widget |  Status  | Notes |
-|:-----|:--------:|------:|
-| Google Map  | **Supported** | - |
-| Data Base  | **Unsupported** | - |
