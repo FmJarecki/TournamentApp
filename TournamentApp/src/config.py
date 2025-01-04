@@ -1,3 +1,3 @@
 import os
 
-REPO_DIR: str = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+REPO_DIR: str = os.path.relpath("..", "..")

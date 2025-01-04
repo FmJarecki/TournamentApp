@@ -1,45 +1,34 @@
+import os
+from kivy.uix.screenmanager import Screen
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.image import AsyncImage
+from kivy.uix.button import Button
+
+from icon_button import add_icon_button
 from config import REPO_DIR
 
-from kivymd.uix.screen import MDScreen
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.label import MDLabel
-from kivy.uix.image import AsyncImage
-from kivymd.uix.button import MDIconButton
 
-import os
-
-class PlayerView(MDScreen):
+class PlayerScreen(Screen):
     def __init__(self, player_name: str, **kwargs):
         super().__init__(**kwargs)
         self.player_name = player_name
         self.build()
 
     def build(self):
-        layout = MDBoxLayout(
+        layout = BoxLayout(
             orientation="vertical",
         )
 
-        back_button = MDIconButton(
-            icon="arrow-left",
-            on_press=self.handle_back,
-            pos_hint={'left': 1}
-        )
-        layout.add_widget(back_button)
+        add_icon_button(layout, self.handle_back, f'{REPO_DIR}/data/back_arrow.png', 0.1, 0.1)
 
-        img_path = f'{REPO_DIR}/data/icon.png'
-        if os.path.exists(img_path):
-            image = AsyncImage(
-                source=img_path,
-                size_hint=(1, 0.8)
-            )
-        else:
-            image = MDLabel(
-                text="👤",
-                font_size='48sp',
-                halign='center'
-            )
+        image = AsyncImage(
+            source=f'{REPO_DIR}/data/icon.png',
+            size_hint=(1, 0.8)
+        )
         layout.add_widget(image)
-        name_label = MDLabel(
+        name_label = Label(
+            size_hint=(1, 0.1),
             text=self.player_name,
             halign="center"
         )

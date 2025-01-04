@@ -1,11 +1,11 @@
 import webbrowser
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from kivymd.uix.screen import MDScreen
+from kivy.uix.screenmanager import Screen
 
 from config import REPO_DIR
 
-class MapScreen(MDScreen):
+class MapScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.build()
