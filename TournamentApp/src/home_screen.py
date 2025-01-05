@@ -3,12 +3,13 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Rectangle
-
+from kivy.resources import resource_find
 
 from teams_screen import TeamListScreen
 from map_screen import MapScreen
 from icon_button import add_icon_button
-from config import REPO_DIR
+from config import IMAGES_PATH
+
 
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
@@ -39,7 +40,7 @@ class HomeScreen(Screen):
             size_hint_y=0.1,
             orientation='horizontal'
         )
-        add_icon_button(top_layout, self.on_settings_press, f'{REPO_DIR}/data/settings.png', 0.1)
+        add_icon_button(top_layout, self.on_settings_press, resource_find(f'{IMAGES_PATH}/settings.png'), 0.1)
         top_layout.add_widget(
             Label(
                 text="Vet Championship",
@@ -52,10 +53,10 @@ class HomeScreen(Screen):
             size_hint_y=0.1,
             orientation='horizontal'
         )
-        add_icon_button(options_layout, self.on_trophy_press, f'{REPO_DIR}/data/trophy.png')
-        add_icon_button(options_layout, self.on_teams_press, f'{REPO_DIR}/data/teams.png')
-        add_icon_button(options_layout, self.on_profile_press, f'{REPO_DIR}/data/person.png')
-        add_icon_button(options_layout, self.on_map_press, f'{REPO_DIR}/data/map.png')
+        add_icon_button(options_layout, self.on_trophy_press, resource_find(f'{IMAGES_PATH}/trophy.png'))
+        add_icon_button(options_layout, self.on_teams_press, resource_find(f'{IMAGES_PATH}/teams.png'))
+        add_icon_button(options_layout, self.on_profile_press, resource_find(f'{IMAGES_PATH}/person.png'))
+        add_icon_button(options_layout, self.on_map_press, resource_find(f'{IMAGES_PATH}/map.png'))
 
         main_container.add_widget(top_layout)
         main_container.add_widget(options_layout)

@@ -1,3 +1,1 @@
-import os
-
-REPO_DIR: str = os.path.relpath("..", "..")
+IMAGES_PATH: str = 'images'

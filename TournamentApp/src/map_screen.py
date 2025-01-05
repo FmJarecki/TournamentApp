@@ -2,8 +2,10 @@ import webbrowser
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+from kivy.resources import resource_find
 
-from config import REPO_DIR
+from config import IMAGES_PATH
+
 
 class MapScreen(Screen):
     def __init__(self, **kwargs):
@@ -13,11 +15,11 @@ class MapScreen(Screen):
     def build(self):
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
 
-        button_field = Button(background_normal=f'{REPO_DIR}/data/stadium_google_map.png')
+        button_field = Button(background_normal=resource_find(f'{IMAGES_PATH}/stadium_google_map.png'))
         button_field.bind(on_release=lambda instance: self.open_maps(0.0, 0.0))
         layout.add_widget(button_field)
 
-        button_hotel = Button(background_normal=f'{REPO_DIR}/data/hotel_google_map.png')
+        button_hotel = Button(background_normal=resource_find(f'{IMAGES_PATH}/hotel_google_map.png'))
         button_hotel.bind(on_release=lambda instance: self.open_maps(0.0, 0.0))
         layout.add_widget(button_hotel)
 

@@ -1,12 +1,11 @@
-import os
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.image import AsyncImage
-from kivy.uix.button import Button
+from kivy.resources import resource_find
 
 from icon_button import add_icon_button
-from config import REPO_DIR
+from config import IMAGES_PATH
 
 
 class PlayerScreen(Screen):
@@ -20,10 +19,10 @@ class PlayerScreen(Screen):
             orientation="vertical",
         )
 
-        add_icon_button(layout, self.handle_back, f'{REPO_DIR}/data/back_arrow.png', 0.1, 0.1)
+        add_icon_button(layout, self.handle_back, resource_find(f'{IMAGES_PATH}/back_arrow.png'), 0.05, 0.1)
 
         image = AsyncImage(
-            source=f'{REPO_DIR}/data/icon.png',
+            source=resource_find(f'{IMAGES_PATH}/default_player.png'),
             size_hint=(1, 0.8)
         )
         layout.add_widget(image)
