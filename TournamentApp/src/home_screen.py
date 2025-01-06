@@ -1,37 +1,36 @@
+from kivy.app import App
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
 from kivy.uix.widget import Widget
+from kivy.uix.image import Image
 from kivy.graphics import Color, Rectangle
-from kivy.resources import resource_find
 
 from teams_screen import TeamListScreen
 from map_screen import MapScreen
-from icon_button import add_icon_button
-from config import IMAGES_PATH
+from settings_screen import SettingsScreen
+from icon_button import IconButton
+from config import DARK_IMAGES_PATH, BRIGHT_IMAGES_PATH, DARK_THEME_COLOR, BRIGHT_THEME_COLOR, IMAGES_PATH
 
 
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        self.settings = SettingsScreen(name='settings', home_screen=self)
+
         self.main_layout = BoxLayout(orientation='horizontal')
-        with self.canvas.before:
-            Color(*(0.1, 0.1, 0.1, 1))
-            self.rect = Rectangle(size=self.size, pos=self.pos)
-
-        self.bind(size=self._update_rect, pos=self._update_rect)
-
         self.screen_manager = ScreenManager()
         self.screen_manager.add_widget(TrophyView(name='trophy'))
         self.screen_manager.add_widget(ProfileView(name='profile'))
         self.screen_manager.add_widget(MapScreen(name='map'))
-
+        self.screen_manager.add_widget(self.settings)
         self.main_layout.add_widget(self.screen_manager)
 
-        self.build()
+        with self.canvas.before:
+            self.bg_color = Color()
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+        self.bind(size=self._update_rect, pos=self._update_rect)
 
-    def build(self):
         main_container = BoxLayout(
             orientation='vertical'
         )
@@ -40,11 +39,12 @@ class HomeScreen(Screen):
             size_hint_y=0.1,
             orientation='horizontal'
         )
-        add_icon_button(top_layout, self.on_settings_press, resource_find(f'{IMAGES_PATH}/settings.png'), 0.1)
+        self.settings_button = IconButton(self.on_settings_press, 0.1)
+        top_layout.add_widget(self.settings_button)
+
         top_layout.add_widget(
-            Label(
-                text="Vet Championship",
-                bold=True
+            Image(
+                source=f'{IMAGES_PATH}/title.png'
             )
         )
         top_layout.add_widget(Widget())
@@ -53,16 +53,38 @@ class HomeScreen(Screen):
             size_hint_y=0.1,
             orientation='horizontal'
         )
-        add_icon_button(options_layout, self.on_trophy_press, resource_find(f'{IMAGES_PATH}/trophy.png'))
-        add_icon_button(options_layout, self.on_teams_press, resource_find(f'{IMAGES_PATH}/teams.png'))
-        add_icon_button(options_layout, self.on_profile_press, resource_find(f'{IMAGES_PATH}/person.png'))
-        add_icon_button(options_layout, self.on_map_press, resource_find(f'{IMAGES_PATH}/map.png'))
+        self.trophy_button = IconButton(self.on_trophy_press)
+        self.teams_button = IconButton(self.on_teams_press)
+        self.profile_button = IconButton(self.on_profile_press)
+        self.map_button = IconButton(self.on_map_press)
+        options_layout.add_widget(self.trophy_button)
+        options_layout.add_widget(self.teams_button)
+        options_layout.add_widget(self.profile_button)
+        options_layout.add_widget(self.map_button)
 
         main_container.add_widget(top_layout)
         main_container.add_widget(options_layout)
         main_container.add_widget(self.main_layout)
 
         self.add_widget(main_container)
+
+        self.update_background_color()
+
+    def update_background_color(self):
+        if App.get_running_app().is_dark_theme:
+            self.bg_color.rgba = DARK_THEME_COLOR
+            self.settings_button.update_icon(f'{DARK_IMAGES_PATH}/settings.png')
+            self.trophy_button.update_icon(f'{DARK_IMAGES_PATH}/trophy.png')
+            self.teams_button.update_icon(f'{DARK_IMAGES_PATH}/teams.png')
+            self.profile_button.update_icon(f'{DARK_IMAGES_PATH}/person.png')
+            self.map_button.update_icon(f'{DARK_IMAGES_PATH}/map.png')
+        else:
+            self.bg_color.rgba = BRIGHT_THEME_COLOR
+            self.settings_button.update_icon(f'{BRIGHT_IMAGES_PATH}/settings.png')
+            self.trophy_button.update_icon(f'{BRIGHT_IMAGES_PATH}/trophy.png')
+            self.teams_button.update_icon(f'{BRIGHT_IMAGES_PATH}/teams.png')
+            self.profile_button.update_icon(f'{BRIGHT_IMAGES_PATH}/person.png')
+            self.map_button.update_icon(f'{BRIGHT_IMAGES_PATH}/map.png')
 
     def _update_rect(self, *args):
         self.rect.size = self.size
@@ -91,16 +113,22 @@ class HomeScreen(Screen):
         self.screen_manager.current = 'map'
 
     def on_settings_press(self, instance):
-        print("Settings pressed")
+        self.screen_manager.current = 'settings'
 
 
 class TrophyView(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.add_widget(Label(text="Trophy Screen", halign='center'))
+        self.add_widget(Image(
+                source=f'{BRIGHT_IMAGES_PATH}/football.png'
+            )
+        )
 
 
 class ProfileView(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.add_widget(Label(text="Profile Screen", halign='center'))
+        self.add_widget(Image(
+                source=f'{BRIGHT_IMAGES_PATH}/football.png'
+            )
+        )
