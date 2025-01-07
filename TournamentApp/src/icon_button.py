@@ -6,13 +6,17 @@ from typing import Callable, Any
 
 
 class IconButton(FloatLayout):
-    def __init__(self, callback: Callable[[Any], None], x_pos: float = 0.5, y_size: float = 1.0, icon_path: str = '', **kwargs):
+    def __init__(self,
+                 callback: Callable[[Any], None],
+                 x_pos: float = 0.5,
+                 icon_path: str = '',
+                 icon_size = (0.5, 0.5),
+                 btn_size = (1.0 ,1.0),
+                 **kwargs
+                 ):
         super().__init__(**kwargs)
-
-        self.size_hint = (1, y_size)
-
         icon = Image(
-            size_hint=(0.5, 0.5),
+            size_hint=icon_size,
             pos_hint={'center_x': x_pos, 'center_y': 0.5}
         )
         icon.source = icon_path if icon_path != '' else icon.source
@@ -20,7 +24,7 @@ class IconButton(FloatLayout):
 
         button = Button(
             background_color=(1.0, 1.0, 1.0, 0.0),
-            size_hint=(1, 1),
+            size_hint=btn_size,
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             on_press=callback
         )
