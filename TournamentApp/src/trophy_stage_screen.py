@@ -111,17 +111,41 @@ class TropyStageScreen(Screen):
         num_teams = len(teams)
         next_power_of_two = 2 ** ceil(log2(num_teams))
         num_byes = next_power_of_two - num_teams
+
         for _ in range(num_byes):
             teams.append('-')
+
+        teams = self.reorder_teams(teams)
+
         rounds = []
         current_round = [(teams[i], teams[i + 1]) for i in range(0, len(teams), 2)]
         rounds.append(current_round)
         while len(current_round) > 1:
             next_round = []
-            for i in range(0, len(current_round), 2):
-                next_round.append((f"Winner of {current_round[i]}", f"Winner of {current_round[i + 1]}"))
-            current_round = next_round
+            for pair in current_round:
+                if pair[0] == '-':
+                    next_round.append(pair[1])
+                elif pair[1] == '-':
+                    next_round.append(pair[0])
+                else:
+                    next_round.append(f"Winner of {pair}")
+            current_round = [(next_round[i], next_round[i + 1]) for i in range(0, len(next_round), 2)]
             rounds.append(current_round)
+
         return rounds
+
+    def reorder_teams(self, teams):
+        real_teams = [team for team in teams if team != '-']
+        byes = [team for team in teams if team == '-']
+
+        reordered = []
+        i = 0
+        while i < len(real_teams) or i < len(byes):
+            if i < len(real_teams):
+                reordered.append(real_teams[i])
+            if i < len(byes):
+                reordered.append(byes[i])
+            i += 1
+        return reordered
 
 

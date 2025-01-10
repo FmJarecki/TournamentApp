@@ -7,7 +7,7 @@ def generate_fake_data():
     def generate_players(players_per_team: int = 15):
         players = []
         team_name = 'Team @'
-        for i in range(players_per_team*3):
+        for i in range(players_per_team*6):
             if i % players_per_team == 0:
                 team_name = team_name[:-1] + chr(ord(team_name[-1]) + 1)
             while True:
