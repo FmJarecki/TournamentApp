@@ -2,7 +2,7 @@ from kivy.uix.screenmanager import Screen
 from teams_screen import RoundedButton
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
-from trophy_matches_screen import TropyMatchesScreen
+from trophy_matches_screen import TrophyMatchesScreen
 from trophy_tables_screen import TrophyTablesScreen
 
 class TrophyScreen(Screen):
@@ -46,7 +46,7 @@ class TrophyScreen(Screen):
     def button_clicked(self, screen_name: str):
         obj = None
         if screen_name == 'Matches':
-            obj = TropyMatchesScreen(name='Matches')
+            obj = TrophyMatchesScreen(name='Matches')
         elif screen_name == 'Tables':
             obj = TrophyTablesScreen(name='Tables')
         if obj:
