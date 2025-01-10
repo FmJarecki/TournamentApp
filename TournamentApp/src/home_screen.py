@@ -8,7 +8,7 @@ from kivy.graphics import Color, Rectangle
 from teams_screen import TeamListScreen
 from map_screen import MapScreen
 from settings_screen import SettingsScreen
-from trophy_screen import TrophyScreen
+from trophy_stage_screen import TropyStageScreen
 from icon_button import IconButton
 from config import DARK_IMAGES_PATH, BRIGHT_IMAGES_PATH, DARK_THEME_COLOR, BRIGHT_THEME_COLOR, IMAGES_PATH
 
@@ -21,7 +21,7 @@ class HomeScreen(Screen):
 
         self.main_layout = BoxLayout(orientation='horizontal')
         self.screen_manager = ScreenManager()
-        self.screen_manager.add_widget(TrophyScreen(name='trophy'))
+        self.screen_manager.add_widget(TropyStageScreen(name='trophy'))
         self.screen_manager.add_widget(ProfileView(name='profile'))
         self.screen_manager.add_widget(MapScreen(name='map'))
         self.screen_manager.add_widget(self.settings)
