@@ -79,7 +79,7 @@ class RankingTable(GridLayout):
         self.update_table()
 
 
-class TropyStageScreen(Screen):
+class TropyMatchesScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.db = TournamentDatabase()
