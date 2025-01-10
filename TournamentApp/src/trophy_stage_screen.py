@@ -87,26 +87,34 @@ class TropyStageScreen(Screen):
 
     def build(self):
         self.clear_widgets()
+        rounds = self.generate_bracket_robin_round()
+        #rounds = self.generate_bracket_eliminations()
+        layout = self.generate_trophy_table(rounds, robin_round = True)
+        self.add_widget(layout)
+
+    def generate_trophy_table(self,rounds, robin_round = True):
         layout = GridLayout(cols=1, size_hint=(1, 1))
 
-        rounds = self.generate_bracket()
-        for i, match_round in enumerate(rounds[:-1], 1):
-            #headers = ['Match'  , 'Result']
-            data = list(match_round)
+        rounds_num = len(rounds) - (1 if not robin_round else 0)
+
+        for i in range(1, rounds_num + 1):
+            data = list(rounds[i-1])
             table = RankingTable(headers=None, data=data, title=f"Round {i}")
             root = ScrollView(size_hint=(1, 1), bar_width=10)
             root.add_widget(table)
             layout.add_widget(root)
 
-        final_round = rounds[-1]
-        data = list(final_round)
-        table = RankingTable(headers=None, data=data, title=f"Final match")
-        root = ScrollView(size_hint=(1, 1), bar_width=10)
-        root.add_widget(table)
-        layout.add_widget(root)
-        self.add_widget(layout)
+        if not robin_round:
+            final_round = rounds[-1]
+            data = list(final_round)
+            table = RankingTable(headers=None, data=data, title=f"Final match")
+            root = ScrollView(size_hint=(1, 1), bar_width=10)
+            root.add_widget(table)
+            layout.add_widget(root)
+        return layout
 
-    def generate_bracket(self):
+
+    def generate_bracket_eliminations(self):
         teams = self.db.get_teams()
         num_teams = len(teams)
         next_power_of_two = 2 ** ceil(log2(num_teams))
@@ -131,6 +139,26 @@ class TropyStageScreen(Screen):
                     next_round.append(f"Winner of {pair}")
             current_round = [(next_round[i], next_round[i + 1]) for i in range(0, len(next_round), 2)]
             rounds.append(current_round)
+        return rounds
+
+    def generate_bracket_robin_round(self):
+        teams = self.db.get_teams()
+        num_teams = len(teams)
+
+        rounds = []
+
+        if num_teams % 2 == 1:
+            teams.append('-')
+
+        for i in range(num_teams - 1):
+            current_round = []
+            for j in range(len(teams) // 2):
+                team1 = teams[j]
+                team2 = teams[len(teams) - 1 - j]
+                current_round.append((team1, team2))
+            rounds.append(current_round)
+
+            teams = [teams[0]] + [teams[-1]] + teams[1:-1]
 
         return rounds
 
