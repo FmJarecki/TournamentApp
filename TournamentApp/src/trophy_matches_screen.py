@@ -40,16 +40,17 @@ class RankingTable(GridLayout):
         self.add_widget(layout)
 
     def fill_rows(self):
-        outer_layout = BoxLayout(orientation='vertical', size_hint_y=None)
+        outer_layout = BoxLayout(orientation='vertical', size_hint_y=None, spacing=20, padding=[0, 10, 0, 10])
+        outer_layout.bind(minimum_height=outer_layout.setter('height'))
         for row in self.data:
             inner_layout = BoxLayout(orientation='horizontal')
+            inner_layout.bind(minimum_height=inner_layout.setter('height'))
             for cell in row:
                 inner_layout.add_widget(Label(
                     text=cell,
-                    size_hint_y=None,
-                    height=40,
                     size_hint_x=1 / len(self.data[0]),
-                    text_size=(200, None),
+                    size_hint_y=1,
+                    text_size=(None, None),
                     halign='center',
                     valign='middle'
                 ))
@@ -102,8 +103,9 @@ class TrophyMatchesScreen(Screen):
         rounds_num = len(rounds) - (1 if not robin_round else 0)
 
         for i in range(1, rounds_num + 1):
-            data = list(rounds[i-1])
-            table = RankingTable(headers=None, data=data, title=f"Round {i}")
+            data_rounds = list(rounds[i-1])
+            data_rounds_results = [(team1, str(0), str(0), team2) for team1, team2 in data_rounds]
+            table = RankingTable(headers=None, data=data_rounds_results, title=f"Round {i}")
             container.add_widget(table)
 
         if not robin_round:
