@@ -9,11 +9,11 @@ class TrophyTablesScreen(Screen):
 
 
     def build(self):
-        headers = ['Rank' , 'Team', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
+        headers = ['Rank' , 'Team', 'MP', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
         data = [
-            [str(1), 'Team A', str(1), str(0), str(0), str(1), str(0), str(1),str(2)],
-            [str(2), 'Team B', str(0), str(1), str(0), str(1), str(1), str(0),str(1)],
-            [str(3), 'Team C', str(0), str(0), str(1), str(1), str(4), str(-3),str(0)],
+            [str(1), 'Team A', str(1), str(1), str(0), str(0), str(1), str(0), str(1),str(2)],
+            [str(2), 'Team B', str(1), str(0), str(1), str(0), str(1), str(1), str(0),str(1)],
+            [str(3), 'Team C', str(1), str(0), str(0), str(1), str(1), str(4), str(-3),str(0)],
         ]
         table = RankingTable(headers=headers, data=data)
         root = ScrollView(size_hint=(1, 1), bar_width=10)

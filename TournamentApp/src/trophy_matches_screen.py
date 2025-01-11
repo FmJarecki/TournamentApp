@@ -93,25 +93,26 @@ class TrophyMatchesScreen(Screen):
         self.add_widget(layout)
 
     def generate_trophy_table(self,rounds, robin_round = True):
-        layout = GridLayout(cols=1, size_hint=(1, 1))
+
+        root = ScrollView(size_hint=(1, 1), bar_width=10)
+
+        container = BoxLayout(orientation='vertical', size_hint_y=None)
+        container.bind(minimum_height=container.setter('height'))
 
         rounds_num = len(rounds) - (1 if not robin_round else 0)
 
         for i in range(1, rounds_num + 1):
             data = list(rounds[i-1])
             table = RankingTable(headers=None, data=data, title=f"Round {i}")
-            root = ScrollView(size_hint=(1, 1), bar_width=10)
-            root.add_widget(table)
-            layout.add_widget(root)
+            container.add_widget(table)
 
         if not robin_round:
             final_round = rounds[-1]
             data = list(final_round)
             table = RankingTable(headers=None, data=data, title=f"Final match")
-            root = ScrollView(size_hint=(1, 1), bar_width=10)
-            root.add_widget(table)
-            layout.add_widget(root)
-        return layout
+            container.add_widget(table)
+        root.add_widget(container)
+        return root
 
 
     def generate_bracket_eliminations(self):
