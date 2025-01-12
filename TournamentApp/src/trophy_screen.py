@@ -1,7 +1,6 @@
 from kivy.uix.screenmanager import Screen
-from teams_screen import RoundedButton
+from rounded_button import RoundedButton
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget import Widget
 from trophy_matches_screen import TrophyMatchesScreen
 from trophy_tables_screen import TrophyTablesScreen
 

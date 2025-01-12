@@ -1,6 +1,6 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
-from trophy_matches_screen import RankingTable
+from ranking_table import RankingTable
 from db_handler import TournamentDatabase
 
 class TrophyTablesScreen(Screen):
