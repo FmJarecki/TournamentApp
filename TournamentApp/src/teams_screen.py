@@ -5,9 +5,9 @@ from kivy.uix.button import Button
 from kivy.graphics import RoundedRectangle, Color
 from kivy.uix.widget import Widget
 
-from db_handler import TournamentDatabase
 from player_screen import PlayerScreen
 from team_on_field_screen import TeamOnFieldScreen
+from data_client import get_all_teams
 from config import DARK_BUTTONS_COLOR, BRIGHT_BUTTONS_COLOR
 
 
@@ -37,13 +37,12 @@ class RoundedButton(Button):
 class TeamListScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.db = TournamentDatabase()
         self.selected_team = None
         self.build()
 
     def build(self):
         self.clear_widgets()
-        teams = self.db.get_teams()
+        teams = get_all_teams()
         layout = BoxLayout(
             orientation="vertical"
         )
@@ -55,9 +54,9 @@ class TeamListScreen(Screen):
             hor_layout.add_widget(Widget(size_hint_x=0.1))
 
             team_item = RoundedButton(
-                text=team
+                text=team["name"]
             )
-            team_item.bind(on_press=lambda x, team_name=team: self.team_clicked(team_name))
+            team_item.bind(on_press=lambda x, team_name=team["name"]: self.team_clicked(team_name))
             hor_layout.add_widget(team_item)
             hor_layout.add_widget(Widget(size_hint_x=0.1))
             layout.add_widget(hor_layout)

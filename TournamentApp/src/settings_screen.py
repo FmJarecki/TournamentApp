@@ -4,6 +4,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.switch import Switch
 from kivy.uix.label import Label
 
+from settings_db import SettingsDB
+
 
 class SettingsScreen(Screen):
     def __init__(self, home_screen, **kwargs):
@@ -27,7 +29,7 @@ class SettingsScreen(Screen):
         )
         theme_layout.add_widget(self.theme_label)
 
-        theme_switch = Switch(active=True)
+        theme_switch = Switch(active=SettingsDB.get_dark_theme_setting())
         theme_layout.add_widget(theme_switch)
         theme_switch.bind(active=self.on_theme_switch_active)
 
@@ -39,3 +41,4 @@ class SettingsScreen(Screen):
         App.get_running_app().is_dark_theme = value
         self.home_screen.update_background_color()
         self.theme_label.text = "[color=#D9D9D9]Dark theme[/color]" if value else "[color=#434343]Dark theme[/color]"
+        SettingsDB.set_dark_theme_setting(value)
