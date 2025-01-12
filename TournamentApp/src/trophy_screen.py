@@ -47,12 +47,8 @@ class TrophyScreen(Screen):
                 btn = self.create_button(button, self.button_clicked,active = False)
             button_layout.add_widget(btn)
 
-        layout.add_widget(Widget(size_hint_y=0.05))
         layout.add_widget(button_layout)
-        layout.add_widget(Widget(size_hint_y=0.05))
-
         layout.add_widget(obj)
-
         self.add_widget(layout)
 
 
