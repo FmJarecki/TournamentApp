@@ -11,44 +11,53 @@ class TrophyScreen(Screen):
         self.build()
 
 
-    def create_button(self, text, clicked_action = lambda text: print(text)):
+    def create_button(self, text, clicked_action = lambda text: print(text), active = False):
         button = RoundedButton(
-            text=text
+            text=text,
         )
+        if active:
+            button = RoundedButton(
+                text=f"[b][size=30]{text}[/size][/b]",
+                markup=True,
+            )
         button.bind(on_press=lambda x, button_text=text: clicked_action(button_text))
         return button
 
     def build(self):
+        self.prepare_screen(TrophyMatchesScreen(name='Matches'))
+
+    def prepare_screen(self,obj):
         self.clear_widgets()
         layout = BoxLayout(
             orientation="vertical"
         )
 
-        buttons = ['Matches', 'Tables']
-
-        for button in buttons:
-            hor_layout = BoxLayout(
+        button_layout = BoxLayout(
             orientation="horizontal",
-            size_hint_y = 0.8 / len(buttons)
-            )
-            hor_layout.add_widget(Widget(size_hint_x=0.1))
+            spacing=10,
+            size_hint_y=0.1
+        )
 
-            btn = self.create_button(button, self.button_clicked)
+        buttons = ['Matches', 'Tables']
+        for button in buttons:
+            btn = None
+            if obj.name == button:
+                btn = self.create_button(button, self.button_clicked,active = True)
+            else:
+                btn = self.create_button(button, self.button_clicked,active = False)
+            button_layout.add_widget(btn)
 
-            hor_layout.add_widget(btn)
-            hor_layout.add_widget(Widget(size_hint_x=0.1))
-            layout.add_widget(hor_layout)
-            layout.add_widget(Widget(
-                size_hint_y=0.2 / len(buttons)
-            ))
+        layout.add_widget(Widget(size_hint_y=0.05))
+        layout.add_widget(button_layout)
+        layout.add_widget(Widget(size_hint_y=0.05))
+
+        layout.add_widget(obj)
+
         self.add_widget(layout)
 
+
     def button_clicked(self, screen_name: str):
-        obj = None
         if screen_name == 'Matches':
-            obj = TrophyMatchesScreen(name='Matches')
+            self.prepare_screen(TrophyMatchesScreen(name='Matches'))
         elif screen_name == 'Tables':
-            obj = TrophyTablesScreen(name='Tables')
-        if obj:
-            self.parent.add_widget(obj)
-            self.parent.current = obj.name
+            self.prepare_screen(TrophyTablesScreen(name='Tables'))
