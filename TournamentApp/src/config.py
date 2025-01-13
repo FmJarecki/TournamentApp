@@ -1,3 +1,5 @@
+SERVER_URL = "http://127.0.0.1:8000"
+
 IMAGES_PATH = 'images'
 
 DARK_THEME_COLOR = (0.1, 0.1, 0.1, 1)
