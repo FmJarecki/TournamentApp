@@ -18,10 +18,10 @@ class TeamOnFieldScreen(Screen):
         )
         self.add_widget(stadium)
 
-        player_icon_path = f'{BRIGHT_IMAGES_PATH}/person.png'
+        player_icon_path = f'{IMAGES_PATH}/shirt_blue.png'
 
         self.players_buttons = [
-            IconButton(self.on_player_press, icon_path=player_icon_path, pos_hint={'x': 0.0, 'y': -0.3}, icon_size=(1,1), btn_size=(0.15,0.15)),
+            IconButton(self.on_player_press, icon_path=player_icon_path, pos_hint={'x': 0.0, 'y': -0.3}, icon_size=(0.1,1), btn_size=(0.15,0.15)),
             IconButton(self.on_player_press, icon_path=player_icon_path, pos_hint={'x': -0.1, 'y': -0.1}, icon_size=(1,1), btn_size=(0.15,0.15)),
             IconButton(self.on_player_press, icon_path=player_icon_path, pos_hint={'x': 0.1, 'y': -0.1}, icon_size=(1,1), btn_size=(0.15,0.15)),
             IconButton(self.on_player_press, icon_path=player_icon_path, pos_hint={'x': -0.08, 'y': 0.15}, icon_size=(1,1), btn_size=(0.15,0.15)),

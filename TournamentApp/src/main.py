@@ -35,12 +35,13 @@ class KVApp(App):
         sm.add_widget(HomeScreen(name='HomeScreen'))
         return sm
 
+
 if __name__ == '__main__':
     setup_logging()
     SettingsDB.initialize_database()
 
     clear_data()
-    generate_fake_data(players_per_team=8, total_teams=3)
+    generate_fake_data(players_per_team=8, total_teams=5)
 
     app = KVApp(SettingsDB.get_dark_theme_setting())
     app.run()

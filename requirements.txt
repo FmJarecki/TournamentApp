@@ -4,5 +4,9 @@ fastapi
 uvicorn
 requests
 pydantic
+fastapi
+uvicorn
+requests
+pydantic
 setuptools
 cython
