@@ -26,12 +26,12 @@ def fetch_data(endpoint: str) -> list[dict] | dict:
     return response.json()
 
 
-def get_all_users() -> list[dict]:
-    return fetch_data("users")
+def get_all_players() -> list[dict]:
+    return fetch_data("players")
 
 
-def get_user(username: str, number: int) -> dict:
-    return fetch_data(f"users/{username}/{number}")
+def get_player(name: str, number: int) -> dict:
+    return fetch_data(f"players/{name}/{number}")
 
 
 def get_all_teams() -> list[dict]:
@@ -41,3 +41,6 @@ def get_all_teams() -> list[dict]:
 def get_team(team_name: str) -> dict:
     return fetch_data(f"teams/{team_name}")
 
+
+def get_all_players_from_team(team_name: str) -> list[dict]:
+    return fetch_data(f"teams/{team_name}/players")

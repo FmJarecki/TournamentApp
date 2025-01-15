@@ -3,14 +3,18 @@ import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field, model_validator
 
+from config import Position
+
 
 app = FastAPI()
 
 
-class User(BaseModel):
-    username: str
+class Player(BaseModel):
+    name: str
     number: int = Field(..., ge=1, le=99)
     team: str
+    position: Position
+    is_starting: bool
     goals: int = 0
 
 
@@ -35,7 +39,7 @@ class Match(BaseModel):
         return values
 
 
-USERS_FILE = "users.json"
+PLAYERS_FILE = "players.json"
 TEAMS_FILE = "teams.json"
 MATCHES_FILE = "matches.json"
 
@@ -55,8 +59,8 @@ def save_data(filename, data):
         json.dump(data, file, indent=4)  # type: ignore
 
 
-def save_users():
-    save_data(USERS_FILE, users)
+def save_players():
+    save_data(PLAYERS_FILE, players)
 
 
 def save_teams():
@@ -67,19 +71,19 @@ def save_matches():
     save_data(MATCHES_FILE, matches)
 
 
-users: list[dict] = load_data(USERS_FILE)
+players: list[dict] = load_data(PLAYERS_FILE)
 teams: list[dict] = load_data(TEAMS_FILE)
 matches: list[dict] = load_data(MATCHES_FILE)
 
-users_dict = {f"{u['username']}_{u['number']}": u for u in users}
+players_dict = {f"{u['name']}_{u['number']}": u for u in players}
 teams_dict = {t['name']: t for t in teams}
 
 
-def find_user(username: str, number: int) -> dict:
-    key = f"{username}_{number}"
-    if key in users_dict:
-        return users_dict[key]
-    raise HTTPException(status_code=404, detail="User not found")
+def find_player(name: str, number: int) -> dict:
+    key = f"{name}_{number}"
+    if key in players_dict:
+        return players_dict[key]
+    raise HTTPException(status_code=404, detail="Player not found")
 
 
 def find_team(team_name: str) -> dict:
@@ -88,26 +92,26 @@ def find_team(team_name: str) -> dict:
     raise HTTPException(status_code=404, detail="Team not found")
 
 
-@app.post("/users/")
-def add_user(user: User):
-    key = f"{user.username}_{user.number}"
-    if key in users_dict:
-        raise HTTPException(status_code=400, detail="User already exists")
-    user_data = user.model_dump()
-    users.append(user_data)
-    users_dict[key] = user_data
-    save_users()
-    return {"message": "User added"}
+@app.post("/players/")
+def add_player(player: Player):
+    key = f"{player.name}_{player.number}"
+    if key in players_dict:
+        raise HTTPException(status_code=400, detail="Player already exists")
+    player_data = player.model_dump()
+    players.append(player_data)
+    players_dict[key] = player_data
+    save_players()
+    return {"message": "Player added"}
 
 
-@app.get("/users/")
-def get_users():
-    return users
+@app.get("/players/")
+def get_players():
+    return players
 
 
-@app.get("/users/{username}/{number}")
-def get_user(username: str, number: int):
-    return find_user(username, number)
+@app.get("/players/{name}/{number}")
+def get_player(name: str, number: int):
+    return find_player(name, number)
 
 
 @app.post("/teams/")
@@ -131,13 +135,22 @@ def get_team(team_name: str):
     return find_team(team_name)
 
 
-@app.put("/users/{username}/{number}/update_goals")
-def update_user_goals(username: str, number: int, goals: int):
-    user = find_user(username, number)
-    user["goals"] += goals
-    save_users()
-    update_team_stats(user["team"], scored=goals)
-    return {"message": "User goals updated"}
+@app.get("/teams/{team_name}/players")
+def get_team_players(team_name: str):
+    find_team(team_name)
+    team_players = [player for player in players if player["team"] == team_name]
+    if not team_players:
+        raise HTTPException(status_code=404, detail=f"No players found for team {team_name}")
+    return team_players
+
+
+@app.put("/players/{name}/{number}/update_goals")
+def update_player_goals(name: str, number: int, goals: int):
+    player = find_player(name, number)
+    player["goals"] += goals
+    save_players()
+    update_team_stats(player["team"], scored=goals)
+    return {"message": "Player goals updated"}
 
 
 def update_team_stats(team_name: str, scored: int = 0, conceded: int = 0):

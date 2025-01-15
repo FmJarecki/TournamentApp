@@ -6,8 +6,8 @@ import os
 import random
 import functools
 
-from data_client import get_team, get_user
-from config import SERVER_URL
+from data_client import get_team, get_player
+from config import SERVER_URL, Position
 
 
 def handle_http_errors(func):
@@ -26,24 +26,26 @@ def check_team_exists(team: str) -> bool:
 
 
 @handle_http_errors
-def add_user(username: str, number: int, team: str) -> bool:
+def add_player(name: str, number: int, team: str, position: Position, is_starting: bool) -> bool:
     if not check_team_exists(team):
-        logging.error(f"Failed to add user {username} (number: {number}) to team {team}.")
+        logging.error(f"Failed to add player {name} (number: {number}) to team {team}.")
         return False
 
-    if get_user(username, number):
-        logging.warning(f"User {username} with number {number} already exists.")
+    if get_player(name, number):
+        logging.warning(f"Player {name} with number {number} already exists.")
         return False
 
-    url = f"{SERVER_URL}/users/"
+    url = f"{SERVER_URL}/players/"
     payload = {
-        "username": username,
+        "name": name,
         "number": number,
-        "team": team
+        "team": team,
+        "position": position,
+        "is_starting": is_starting
     }
     response = requests.post(url, json=payload)
     response.raise_for_status()
-    logging.info(f"Added user {username} to team {team}.")
+    logging.info(f"Added player {name} to team {team}.")
     return True
 
 
@@ -85,7 +87,7 @@ def add_match(round_number: int, teams: list[str], scores: list[int]) -> bool:
 
 
 def clear_data():
-    files = ["users.json", "teams.json"]
+    files = ["players.json", "teams.json"]
     for file in files:
         if os.path.exists(file):
             os.remove(file)
@@ -94,7 +96,7 @@ def clear_data():
             logging.info(f"{file} does not exist, nothing to clear.")
 
 
-def generate_fake_data(players_per_team=15, total_teams=3):
+def generate_fake_data(players_per_team: int = 15, total_teams: int = 3) -> None:
     first_names = [
         "Anna", "Maria", "Giulia", "Sofia", "Alessia", "Martina", "Chiara", "Giorgia",
         "Elena", "Francesca", "Arianna", "Rebecca", "Valentina", "Camilla", "Alice",
@@ -118,15 +120,32 @@ def generate_fake_data(players_per_team=15, total_teams=3):
     for team_index in range(total_teams):
         team_name = f"Team {chr(65 + team_index)}"
         add_team(team_name)
-
         players = set()
-        for _ in range(players_per_team):
+        positions = list(Position)
+
+        starting_positions = [Position.GK, Position.LB, Position.RB, Position.LM, Position.RM]
+
+        for position in starting_positions:
             while True:
                 first_name = random.choice(first_names)
                 last_name = random.choice(last_names)
-                username = f"{first_name}_{last_name}"
-                if username not in players:
-                    players.add(username)
+                name = f"{first_name} {last_name}"
+                if name not in players:
+                    players.add(name)
                     break
+
             number = random.randint(1, 99)
-            add_user(username, number, team_name)
+            add_player(name, number, team_name, position, is_starting=True)
+
+        for _ in range(players_per_team - 5):
+            while True:
+                first_name = random.choice(first_names)
+                last_name = random.choice(last_names)
+                name = f"{first_name} {last_name}"
+                if name not in players:
+                    players.add(name)
+                    break
+
+            number = random.randint(1, 99)
+            position = random.choice(positions)
+            add_player(name, number, team_name, position, is_starting=False)

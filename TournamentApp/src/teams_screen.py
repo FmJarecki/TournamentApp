@@ -79,7 +79,11 @@ class TeamListScreen(Screen):
         self.add_widget(layout)
 
     def team_clicked(self, team_name: str):
-        obj = TeamOnFieldScreen(name='Field')
+        screen_name = 'Field'
+        if screen_name in self.parent.screen_names:
+            screen_to_remove = self.parent.get_screen(screen_name)
+            self.parent.remove_widget(screen_to_remove)
+        obj = TeamOnFieldScreen(team_name, name=screen_name)
         self.parent.add_widget(obj)
         self.parent.current = obj.name
 
