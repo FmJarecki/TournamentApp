@@ -20,7 +20,7 @@ class TrophyTablesScreen(Screen):
         teams = self.db.get_teams()
         headers = ['Rank' , 'Team', 'MP', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
         data = self.generate_results_table(teams, headers)
-        table = RankingTable(headers=headers, data=data)
+        table = RankingTable(headers=headers, data=data,headers_sorting=True)
         root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))#, bar_width=10)
         root.add_widget(table)
         self.add_widget(root)
