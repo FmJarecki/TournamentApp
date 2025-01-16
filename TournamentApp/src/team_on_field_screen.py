@@ -2,8 +2,9 @@ from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
 
+from player_screen import PlayerScreen
 from data_client import get_all_players_from_team
-from config import IMAGES_PATH, Position
+from config import IMAGES_PATH, DARK_COLOR, BRIGHT_COLOR, Position
 from icon_button import IconButton
 
 
@@ -50,14 +51,14 @@ class TeamOnFieldScreen(Screen):
                                  pos_hint=self.position_mapping[player['position']], icon_size = (1.0, 1.0))
 
                 name = Label(
-                text=f"[b][color=#434343]{player['name']}[/color][/b]",
+                text=f"[b][color={BRIGHT_COLOR}]{player['name']}[/color][/b]",
                 markup = True,
                 size_hint=(0.3, 0.4),
                 pos_hint={'x': icon_btn.pos_hint['x'], 'y': icon_btn.pos_hint['y']-0.04}
                 )
 
                 number = Label(
-                text=f"[b][color=#434343]{player['number']}[/color][/b]",
+                text=f"[b][color={DARK_COLOR}]{player['number']}[/color][/b]",
                 markup = True,
                 size_hint=(0.3, 0.4),
                 pos_hint={'x': icon_btn.pos_hint['x'], 'y': icon_btn.pos_hint['y']}
@@ -68,6 +69,8 @@ class TeamOnFieldScreen(Screen):
                 self.add_widget(number)
 
 
-    def on_player_press(self, instance):
-        print('player pressed!')
+    def on_player_press(self, player: str):
+        player_view = PlayerScreen(player, name='Player')
+        self.parent.add_widget(player_view)
+        self.parent.current = player_view.name
 

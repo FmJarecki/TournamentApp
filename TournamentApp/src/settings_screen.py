@@ -5,6 +5,8 @@ from kivy.uix.switch import Switch
 from kivy.uix.label import Label
 
 from settings_db import SettingsDB
+from text_fields import get_text
+from config import DARK_COLOR, BRIGHT_COLOR
 
 
 class SettingsScreen(Screen):
@@ -20,8 +22,8 @@ class SettingsScreen(Screen):
             orientation="horizontal",
         )
 
-        text = "[color=#D9D9D9]Dark theme[/color]" if App.get_running_app().is_dark_theme\
-            else "[color=#434343]Dark theme[/color]"
+        text = f"[color={DARK_COLOR}]{get_text('dark_theme')}[/color]" if App.get_running_app().is_dark_theme\
+            else f"[color={BRIGHT_COLOR}]{get_text('dark_theme')}[/color]"
         self.theme_label = Label(
             text=text,
             halign="center",
