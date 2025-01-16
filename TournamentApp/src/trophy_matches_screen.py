@@ -4,6 +4,7 @@ from db_handler import TournamentDatabase
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
 from ranking_table import RankingTable
+from kivy.core.window import Window
 
 class TrophyMatchesScreen(Screen):
     def __init__(self, **kwargs):
@@ -19,26 +20,18 @@ class TrophyMatchesScreen(Screen):
         self.add_widget(layout)
 
     def generate_trophy_table(self,rounds, robin_round = True):
-
-        root = ScrollView(size_hint=(1, 1), bar_width=10)
-
-        container = BoxLayout(orientation='vertical', size_hint_y=None)
-        container.bind(minimum_height=container.setter('height'))
-
         rounds_num = len(rounds) - (1 if not robin_round else 0)
+        layout = BoxLayout(orientation='vertical', size_hint_y=None)
+        layout.bind(minimum_height=layout.setter('height'))
 
         for i in range(1, rounds_num + 1):
             data_rounds = list(rounds[i-1])
             data_rounds_results = [(team1, str(0), str(0), team2) for team1, team2 in data_rounds]
             table = RankingTable(headers=None, data=data_rounds_results, title=f"Round {i}")
-            container.add_widget(table)
+            layout.add_widget(table)
 
-        if not robin_round:
-            final_round = rounds[-1]
-            data = list(final_round)
-            table = RankingTable(headers=None, data=data, title=f"Final match")
-            container.add_widget(table)
-        root.add_widget(container)
+        root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))
+        root.add_widget(layout)
         return root
 
 
@@ -72,9 +65,7 @@ class TrophyMatchesScreen(Screen):
     def generate_bracket_robin_round(self):
         teams = self.db.get_teams()
         num_teams = len(teams)
-
         rounds = []
-
         if num_teams % 2 == 1:
             teams.append('-')
 

@@ -1,8 +1,15 @@
+from kivy.config import Config
+
+Config.set('graphics', 'width', '300')
+Config.set('graphics', 'height', '300')
+Config.write()
+
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 
 from home_screen import HomeScreen
 from db_handler import generate_fake_data
+
 
 class KVApp(App):
     def __init__(self, is_dark_theme: bool, **kwargs):

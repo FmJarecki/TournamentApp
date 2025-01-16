@@ -2,7 +2,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
 from ranking_table import RankingTable
 from db_handler import TournamentDatabase
-
+from kivy.core.window import Window
 class TrophyTablesScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -21,6 +21,6 @@ class TrophyTablesScreen(Screen):
         headers = ['Rank' , 'Team', 'MP', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
         data = self.generate_results_table(teams, headers)
         table = RankingTable(headers=headers, data=data)
-        root = ScrollView(size_hint=(1, 1), bar_width=10)
+        root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))#, bar_width=10)
         root.add_widget(table)
         self.add_widget(root)
