@@ -6,7 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 from rounded_button import RoundedButton
 from kivy.core.window import Window
 
-class RankingTable(BoxLayout):
+class Table(BoxLayout):
     def __init__(self, headers, data, title = None, title_font_multiplier = 0.055, rows_font_multiplier = 0.04,headers_sorting = False, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'

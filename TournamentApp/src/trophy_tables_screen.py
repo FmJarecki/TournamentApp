@@ -1,6 +1,6 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
-from ranking_table import RankingTable
+from table import Table
 from data_client import get_all_teams
 from kivy.core.window import Window
 class TrophyTablesScreen(Screen):
@@ -9,7 +9,7 @@ class TrophyTablesScreen(Screen):
         self.build()
 
     @staticmethod
-    def generate_results_table(teams, headers):
+    def _generate_results_table(teams, headers):
         data = []
         for i in range(len(teams)):
             table_row = [str(0)] * (len(headers[2:]))
@@ -21,8 +21,8 @@ class TrophyTablesScreen(Screen):
         team_names = [team['name'] for team in teams]
 
         headers = ['Rank' , 'Team', 'MP', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
-        data = self.generate_results_table(team_names, headers)
-        table = RankingTable(headers=headers, data=data,headers_sorting=True)
+        data = self._generate_results_table(team_names, headers)
+        table = Table(headers=headers, data=data,headers_sorting=True)
         root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))#, bar_width=10)
         root.add_widget(table)
         self.add_widget(root)

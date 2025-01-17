@@ -1,6 +1,6 @@
 from enum import Enum
 
-SERVER_URL = "http://192.168.1.4:8000"  # fill with local ip
+SERVER_URL = "http://192.168.0.28:8000"  # fill with local ip
 
 IMAGES_PATH = 'images'
 

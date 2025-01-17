@@ -10,9 +10,9 @@ class TrophyScreen(Screen):
         self.build()
 
     def build(self):
-        self.prepare_screen(TrophyMatchesScreen(name='Matches'))
+        self._prepare_screen(TrophyMatchesScreen(name='Matches'))
 
-    def prepare_screen(self,obj):
+    def _prepare_screen(self,obj):
         self.clear_widgets()
         layout = BoxLayout(
             orientation="vertical",
@@ -26,11 +26,10 @@ class TrophyScreen(Screen):
 
         buttons = ['Matches', 'Tables']
         for button in buttons:
-            btn = None
             if obj.name == button:
-                btn = RoundedButton.create_button(button, self.button_clicked, active = True)
+                btn = RoundedButton.create_button(button, self._button_clicked, active = True)
             else:
-                btn = RoundedButton.create_button(button, self.button_clicked, active = False)
+                btn = RoundedButton.create_button(button, self._button_clicked, active = False)
             button_layout.add_widget(btn)
 
         layout.add_widget(button_layout)
@@ -38,8 +37,8 @@ class TrophyScreen(Screen):
         self.add_widget(layout)
 
 
-    def button_clicked(self, screen_name: str):
+    def _button_clicked(self, screen_name: str):
         if screen_name == 'Matches':
-            self.prepare_screen(TrophyMatchesScreen(name='Matches'))
+            self._prepare_screen(TrophyMatchesScreen(name='Matches'))
         elif screen_name == 'Tables':
-            self.prepare_screen(TrophyTablesScreen(name='Tables'))
+            self._prepare_screen(TrophyTablesScreen(name='Tables'))

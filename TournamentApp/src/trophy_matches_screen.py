@@ -3,7 +3,7 @@ from math import log2, ceil
 from data_client import get_all_teams
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
-from ranking_table import RankingTable
+from table import Table
 from kivy.core.window import Window
 
 class TrophyMatchesScreen(Screen):
@@ -13,29 +13,30 @@ class TrophyMatchesScreen(Screen):
 
     def build(self):
         self.clear_widgets()
-        rounds = self.generate_bracket_robin_round()
-        #rounds = self.generate_bracket_eliminations()
-        layout = self.generate_trophy_table(rounds, robin_round = True)
+        rounds = self._generate_bracket_robin_round()
+        #rounds = self._generate_bracket_eliminations()
+        layout = self._generate_trophy_table(rounds, robin_round = True)
         self.add_widget(layout)
 
     @staticmethod
-    def generate_trophy_table(rounds, robin_round = True):
+    def _generate_trophy_table(rounds, robin_round = True):
         rounds_num = len(rounds) - (1 if not robin_round else 0)
+        print(rounds_num)
         layout = BoxLayout(orientation='vertical', size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
 
         for i in range(1, rounds_num + 1):
             data_rounds = list(rounds[i-1])
             data_rounds_results = [(team1, str(0), str(0), team2) for team1, team2 in data_rounds]
-            table = RankingTable(headers=None, data=data_rounds_results, title=f"Round {i}")
+            table = Table(headers=None, data=data_rounds_results, title=f"Round {i}")
             layout.add_widget(table)
 
         root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))
         root.add_widget(layout)
         return root
 
-
-    def generate_bracket_eliminations(self):
+    @staticmethod
+    def _generate_bracket_eliminations():
         teams = get_all_teams()
         team_names = [team['name'] for team in teams]
         num_teams = len(team_names)
@@ -45,7 +46,7 @@ class TrophyMatchesScreen(Screen):
         for _ in range(num_byes):
             team_names.append('-')
 
-        team_names = self.reorder_teams(team_names)
+        team_names = TrophyMatchesScreen._reorder_teams(team_names)
 
         rounds = []
         current_round = [(team_names[i], team_names[i + 1]) for i in range(0, len(team_names), 2)]
@@ -64,7 +65,7 @@ class TrophyMatchesScreen(Screen):
         return rounds
 
     @staticmethod
-    def generate_bracket_robin_round():
+    def _generate_bracket_robin_round():
         teams = get_all_teams()
         team_names = [team['name'] for team in teams]
         num_teams = len(team_names)
@@ -85,7 +86,7 @@ class TrophyMatchesScreen(Screen):
         return rounds
 
     @staticmethod
-    def reorder_teams(teams):
+    def _reorder_teams(teams):
         real_teams = [team for team in teams if team != '-']
         byes = [team for team in teams if team == '-']
 
