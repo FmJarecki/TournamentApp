@@ -1,49 +1,120 @@
-2025-01-17 13:07:27,415 - INFO - Database already exists.
-2025-01-17 13:07:27,415 - INFO - players.json does not exist, nothing to clear.
-2025-01-17 13:07:27,415 - INFO - teams.json does not exist, nothing to clear.
-2025-01-17 13:07:30,131 - WARNING - stderr: Traceback (most recent call last):
-2025-01-17 13:07:30,131 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/main.py", line 43, in <module>
-2025-01-17 13:07:30,132 - WARNING - stderr:     generate_fake_data(players_per_team=8, total_teams=3)
-2025-01-17 13:07:30,132 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client_setter.py", line 122, in generate_fake_data
-2025-01-17 13:07:30,132 - WARNING - stderr:     add_team(team_name)
-2025-01-17 13:07:30,133 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client_setter.py", line 17, in wrapper
-2025-01-17 13:07:30,133 - WARNING - stderr:     return func(*args, **kwargs)
-2025-01-17 13:07:30,133 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client_setter.py", line 54, in add_team
-2025-01-17 13:07:30,134 - WARNING - stderr:     if check_team_exists(team):
-2025-01-17 13:07:30,134 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client_setter.py", line 25, in check_team_exists
-2025-01-17 13:07:30,134 - WARNING - stderr:     return bool(get_team(team))
-2025-01-17 13:07:30,134 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client.py", line 42, in get_team
-2025-01-17 13:07:30,135 - WARNING - stderr:     return fetch_data(f"teams/{team_name}")
-2025-01-17 13:07:30,135 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client.py", line 12, in wrapper
-2025-01-17 13:07:30,135 - WARNING - stderr:     return func(*args, **kwargs)
-2025-01-17 13:07:30,135 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client.py", line 24, in fetch_data
-2025-01-17 13:07:30,136 - WARNING - stderr:     response = requests.get(url)
-2025-01-17 13:07:30,136 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/api.py", line 73, in get
-2025-01-17 13:07:30,136 - WARNING - stderr:     return request("get", url, params=params, **kwargs)
-2025-01-17 13:07:30,137 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/api.py", line 59, in request
-2025-01-17 13:07:30,137 - WARNING - stderr:     return session.request(method=method, url=url, **kwargs)
-2025-01-17 13:07:30,137 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
-2025-01-17 13:07:30,138 - WARNING - stderr:     resp = self.send(prep, **send_kwargs)
-2025-01-17 13:07:30,138 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
-2025-01-17 13:07:30,139 - WARNING - stderr:     r = adapter.send(request, **kwargs)
-2025-01-17 13:07:30,139 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/adapters.py", line 667, in send
-2025-01-17 13:07:30,140 - WARNING - stderr:     resp = conn.urlopen(
-2025-01-17 13:07:30,140 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 789, in urlopen
-2025-01-17 13:07:30,140 - WARNING - stderr:     response = self._make_request(
-2025-01-17 13:07:30,141 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 495, in _make_request
-2025-01-17 13:07:30,141 - WARNING - stderr:     conn.request(
-2025-01-17 13:07:30,141 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connection.py", line 441, in request
-2025-01-17 13:07:30,142 - WARNING - stderr:     self.endheaders()
-2025-01-17 13:07:30,142 - WARNING - stderr:   File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
-2025-01-17 13:07:30,143 - WARNING - stderr:     self._send_output(message_body, encode_chunked=encode_chunked)
-2025-01-17 13:07:30,143 - WARNING - stderr:   File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
-2025-01-17 13:07:30,144 - WARNING - stderr:     self.send(msg)
-2025-01-17 13:07:30,144 - WARNING - stderr:   File "/usr/lib/python3.10/http/client.py", line 976, in send
-2025-01-17 13:07:30,145 - WARNING - stderr:     self.connect()
-2025-01-17 13:07:30,145 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connection.py", line 279, in connect
-2025-01-17 13:07:30,146 - WARNING - stderr:     self.sock = self._new_conn()
-2025-01-17 13:07:30,146 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connection.py", line 199, in _new_conn
-2025-01-17 13:07:30,147 - WARNING - stderr:     sock = connection.create_connection(
-2025-01-17 13:07:30,147 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/util/connection.py", line 73, in create_connection
-2025-01-17 13:07:30,147 - WARNING - stderr:     sock.connect(sa)
-2025-01-17 13:07:30,147 - WARNING - stderr: KeyboardInterrupt
+2025-01-17 14:48:21,989 - INFO - Database already exists.
+2025-01-17 14:48:21,989 - INFO - Cleared data from players.json.
+2025-01-17 14:48:21,989 - INFO - teams.json does not exist, nothing to clear.
+2025-01-17 14:48:22,045 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/teams/Team%20A
+2025-01-17 14:48:22,052 - INFO - Added team Team A.
+2025-01-17 14:48:22,144 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Zoe%20Fabbri/1
+2025-01-17 14:48:22,151 - INFO - Added player Zoe Fabbri to team Team A.
+2025-01-17 14:48:22,244 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Diana%20Caputo/11
+2025-01-17 14:48:22,256 - INFO - Added player Diana Caputo to team Team A.
+2025-01-17 14:48:22,350 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Sabrina%20Bianco/47
+2025-01-17 14:48:22,356 - INFO - Added player Sabrina Bianco to team Team A.
+2025-01-17 14:48:22,448 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Raffaella%20Pellegrini/36
+2025-01-17 14:48:22,454 - INFO - Added player Raffaella Pellegrini to team Team A.
+2025-01-17 14:48:22,548 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Rebecca%20Conti/96
+2025-01-17 14:48:22,553 - INFO - Added player Rebecca Conti to team Team A.
+2025-01-17 14:48:22,643 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Maria%20Bruno/51
+2025-01-17 14:48:22,649 - INFO - Added player Maria Bruno to team Team A.
+2025-01-17 14:48:22,743 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Giorgia%20Mancini/38
+2025-01-17 14:48:22,748 - INFO - Added player Giorgia Mancini to team Team A.
+2025-01-17 14:48:22,838 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Ludovica%20Palumbo/52
+2025-01-17 14:48:22,844 - INFO - Added player Ludovica Palumbo to team Team A.
+2025-01-17 14:48:22,889 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/teams/Team%20B
+2025-01-17 14:48:22,894 - INFO - Added team Team B.
+2025-01-17 14:48:22,986 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Maria%20Moretti/98
+2025-01-17 14:48:22,992 - INFO - Added player Maria Moretti to team Team B.
+2025-01-17 14:48:23,082 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Martina%20Sorrentino/4
+2025-01-17 14:48:23,091 - INFO - Added player Martina Sorrentino to team Team B.
+2025-01-17 14:48:23,187 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Elena%20Palmieri/61
+2025-01-17 14:48:23,194 - INFO - Added player Elena Palmieri to team Team B.
+2025-01-17 14:48:23,285 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Isabella%20Fontana/19
+2025-01-17 14:48:23,292 - INFO - Added player Isabella Fontana to team Team B.
+2025-01-17 14:48:23,385 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Elisa%20Pellegrini/11
+2025-01-17 14:48:23,391 - INFO - Added player Elisa Pellegrini to team Team B.
+2025-01-17 14:48:23,481 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Valentina%20Cattaneo/33
+2025-01-17 14:48:23,487 - INFO - Added player Valentina Cattaneo to team Team B.
+2025-01-17 14:48:23,579 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Ludovica%20Cattaneo/13
+2025-01-17 14:48:23,587 - INFO - Added player Ludovica Cattaneo to team Team B.
+2025-01-17 14:48:23,678 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Sabrina%20Serafini/46
+2025-01-17 14:48:23,684 - INFO - Added player Sabrina Serafini to team Team B.
+2025-01-17 14:48:23,730 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/teams/Team%20C
+2025-01-17 14:48:23,735 - INFO - Added team Team C.
+2025-01-17 14:48:23,828 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Piera%20Mancini/89
+2025-01-17 14:48:23,835 - INFO - Added player Piera Mancini to team Team C.
+2025-01-17 14:48:23,925 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Raffaella%20D'Amico/72
+2025-01-17 14:48:23,931 - INFO - Added player Raffaella D'Amico to team Team C.
+2025-01-17 14:48:24,027 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Piera%20Conti/73
+2025-01-17 14:48:24,034 - INFO - Added player Piera Conti to team Team C.
+2025-01-17 14:48:24,125 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Sofia%20Giusti/23
+2025-01-17 14:48:24,132 - INFO - Added player Sofia Giusti to team Team C.
+2025-01-17 14:48:24,225 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Giorgia%20Testa/29
+2025-01-17 14:48:24,231 - INFO - Added player Giorgia Testa to team Team C.
+2025-01-17 14:48:24,322 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Viviana%20Ricci/87
+2025-01-17 14:48:24,329 - INFO - Added player Viviana Ricci to team Team C.
+2025-01-17 14:48:24,420 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Arianna%20Moretti/14
+2025-01-17 14:48:24,426 - INFO - Added player Arianna Moretti to team Team C.
+2025-01-17 14:48:24,516 - ERROR - HTTP error in fetch_data: 404 Client Error: Not Found for url: http://192.168.1.4:8000/players/Giovanna%20Marino/76
+2025-01-17 14:48:24,521 - INFO - Added player Giovanna Marino to team Team C.
+2025-01-17 14:48:24,559 - INFO - GL: NPOT texture support is available
+2025-01-17 14:48:24,670 - INFO - ProbeSysfs: device match: /dev/input/event6
+2025-01-17 14:48:24,670 - INFO - MTD: Read event from </dev/input/event6>
+2025-01-17 14:48:24,670 - INFO - Base: Start application main loop
+2025-01-17 14:48:27,671 - WARNING - MTD: Unable to open device "/dev/input/event6". Please ensure you have the appropriate permissions.
+2025-01-17 14:48:44,282 - WARNING - Deprecated property "<BooleanProperty name=allow_stretch>" of object "<kivy.uix.image.Image object at 0x78ff52b35e70>" has been set, it will be removed in a future version
+2025-01-17 14:48:44,282 - WARNING - Deprecated property "<BooleanProperty name=keep_ratio>" of object "<kivy.uix.image.Image object at 0x78ff52b35e70>" was accessed, it will be removed in a future version
+2025-01-17 14:48:44,336 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,345 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,354 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,364 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,372 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,380 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,387 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,395 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,455 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,462 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,470 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,477 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,487 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,494 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,502 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,509 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,519 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,526 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,534 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,542 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,552 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,560 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,567 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,575 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,585 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,593 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,601 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,609 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,617 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,626 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,634 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,641 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,646 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,651 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:48:44,656 - ERROR - Image: Not found <images/shirt_blue.png>
+2025-01-17 14:49:00,409 - INFO - Base: Leaving application in progress...
+2025-01-17 14:49:00,409 - WARNING - stderr: Traceback (most recent call last):
+2025-01-17 14:49:00,409 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/main.py", line 46, in <module>
+2025-01-17 14:49:00,410 - WARNING - stderr:     app.run()
+2025-01-17 14:49:00,410 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/kivy/app.py", line 956, in run
+2025-01-17 14:49:00,410 - WARNING - stderr:     runTouchApp()
+2025-01-17 14:49:00,410 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/kivy/base.py", line 574, in runTouchApp
+2025-01-17 14:49:00,411 - WARNING - stderr:     EventLoop.mainloop()
+2025-01-17 14:49:00,411 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/kivy/base.py", line 339, in mainloop
+2025-01-17 14:49:00,411 - WARNING - stderr:     self.idle()
+2025-01-17 14:49:00,411 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/kivy/base.py", line 379, in idle
+2025-01-17 14:49:00,411 - WARNING - stderr:     Clock.tick()
+2025-01-17 14:49:00,411 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/kivy/clock.py", line 733, in tick
+2025-01-17 14:49:00,412 - WARNING - stderr:     self.post_idle(ts, self.idle())
+2025-01-17 14:49:00,412 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/kivy/clock.py", line 689, in idle
+2025-01-17 14:49:00,413 - WARNING - stderr:     usleep(1000000 * sleeptime)
+2025-01-17 14:49:00,413 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/kivy/clock.py", line 965, in usleep
+2025-01-17 14:49:00,413 - WARNING - stderr:     _usleep(microseconds, self._sleep_obj)
+2025-01-17 14:49:00,413 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/kivy/clock.py", line 556, in _usleep
+2025-01-17 14:49:00,414 - WARNING - stderr:     _libc_usleep(int(microseconds))
+2025-01-17 14:49:00,414 - WARNING - stderr: KeyboardInterrupt

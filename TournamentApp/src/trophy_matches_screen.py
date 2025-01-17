@@ -18,7 +18,8 @@ class TrophyMatchesScreen(Screen):
         layout = self.generate_trophy_table(rounds, robin_round = True)
         self.add_widget(layout)
 
-    def generate_trophy_table(self,rounds, robin_round = True):
+    @staticmethod
+    def generate_trophy_table(rounds, robin_round = True):
         rounds_num = len(rounds) - (1 if not robin_round else 0)
         layout = BoxLayout(orientation='vertical', size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
@@ -36,17 +37,18 @@ class TrophyMatchesScreen(Screen):
 
     def generate_bracket_eliminations(self):
         teams = get_all_teams()
-        num_teams = len(teams)
+        team_names = [team['name'] for team in teams]
+        num_teams = len(team_names)
         next_power_of_two = 2 ** ceil(log2(num_teams))
         num_byes = next_power_of_two - num_teams
 
         for _ in range(num_byes):
-            teams.append('-')
+            team_names.append('-')
 
-        teams = self.reorder_teams(teams)
+        team_names = self.reorder_teams(team_names)
 
         rounds = []
-        current_round = [(teams[i], teams[i + 1]) for i in range(0, len(teams), 2)]
+        current_round = [(team_names[i], team_names[i + 1]) for i in range(0, len(team_names), 2)]
         rounds.append(current_round)
         while len(current_round) > 1:
             next_round = []
@@ -61,26 +63,29 @@ class TrophyMatchesScreen(Screen):
             rounds.append(current_round)
         return rounds
 
-    def generate_bracket_robin_round(self):
+    @staticmethod
+    def generate_bracket_robin_round():
         teams = get_all_teams()
-        num_teams = len(teams)
+        team_names = [team['name'] for team in teams]
+        num_teams = len(team_names)
         rounds = []
         if num_teams % 2 == 1:
-            teams.append('-')
+            team_names.append('-')
 
         for i in range(num_teams - 1):
             current_round = []
-            for j in range(len(teams) // 2):
-                team1 = teams[j]
-                team2 = teams[len(teams) - 1 - j]
+            for j in range(len(team_names) // 2):
+                team1 = team_names[j]
+                team2 = team_names[len(team_names) - 1 - j]
                 current_round.append((team1, team2))
             rounds.append(current_round)
 
-            teams = [teams[0]] + [teams[-1]] + teams[1:-1]
+            team_names = [team_names[0]] + [team_names[-1]] + team_names[1:-1]
 
         return rounds
 
-    def reorder_teams(self, teams):
+    @staticmethod
+    def reorder_teams(teams):
         real_teams = [team for team in teams if team != '-']
         byes = [team for team in teams if team == '-']
 

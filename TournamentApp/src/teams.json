@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Team A",
+        "total_goals": 0,
+        "conceded_goals": 0,
+        "points": 0
+    },
+    {
+        "name": "Team B",
+        "total_goals": 0,
+        "conceded_goals": 0,
+        "points": 0
+    },
+    {
+        "name": "Team C",
+        "total_goals": 0,
+        "conceded_goals": 0,
+        "points": 0
+    }
+]

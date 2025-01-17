@@ -8,7 +8,8 @@ class TrophyTablesScreen(Screen):
         super().__init__(**kwargs)
         self.build()
 
-    def generate_results_table(self, teams, headers):
+    @staticmethod
+    def generate_results_table(teams, headers):
         data = []
         for i in range(len(teams)):
             table_row = [str(0)] * (len(headers[2:]))
@@ -17,8 +18,10 @@ class TrophyTablesScreen(Screen):
 
     def build(self):
         teams = get_all_teams()
+        team_names = [team['name'] for team in teams]
+
         headers = ['Rank' , 'Team', 'MP', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
-        data = self.generate_results_table(teams, headers)
+        data = self.generate_results_table(team_names, headers)
         table = RankingTable(headers=headers, data=data,headers_sorting=True)
         root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))#, bar_width=10)
         root.add_widget(table)
