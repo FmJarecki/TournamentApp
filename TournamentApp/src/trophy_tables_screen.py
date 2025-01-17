@@ -1,12 +1,11 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
 from ranking_table import RankingTable
-from db_handler import TournamentDatabase
+from data_client import get_all_teams
 from kivy.core.window import Window
 class TrophyTablesScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.db = TournamentDatabase()
         self.build()
 
     def generate_results_table(self, teams, headers):
@@ -17,7 +16,7 @@ class TrophyTablesScreen(Screen):
         return data
 
     def build(self):
-        teams = self.db.get_teams()
+        teams = get_all_teams()
         headers = ['Rank' , 'Team', 'MP', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
         data = self.generate_results_table(teams, headers)
         table = RankingTable(headers=headers, data=data,headers_sorting=True)

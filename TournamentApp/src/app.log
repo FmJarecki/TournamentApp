@@ -1,0 +1,49 @@
+2025-01-17 13:07:27,415 - INFO - Database already exists.
+2025-01-17 13:07:27,415 - INFO - players.json does not exist, nothing to clear.
+2025-01-17 13:07:27,415 - INFO - teams.json does not exist, nothing to clear.
+2025-01-17 13:07:30,131 - WARNING - stderr: Traceback (most recent call last):
+2025-01-17 13:07:30,131 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/main.py", line 43, in <module>
+2025-01-17 13:07:30,132 - WARNING - stderr:     generate_fake_data(players_per_team=8, total_teams=3)
+2025-01-17 13:07:30,132 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client_setter.py", line 122, in generate_fake_data
+2025-01-17 13:07:30,132 - WARNING - stderr:     add_team(team_name)
+2025-01-17 13:07:30,133 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client_setter.py", line 17, in wrapper
+2025-01-17 13:07:30,133 - WARNING - stderr:     return func(*args, **kwargs)
+2025-01-17 13:07:30,133 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client_setter.py", line 54, in add_team
+2025-01-17 13:07:30,134 - WARNING - stderr:     if check_team_exists(team):
+2025-01-17 13:07:30,134 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client_setter.py", line 25, in check_team_exists
+2025-01-17 13:07:30,134 - WARNING - stderr:     return bool(get_team(team))
+2025-01-17 13:07:30,134 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client.py", line 42, in get_team
+2025-01-17 13:07:30,135 - WARNING - stderr:     return fetch_data(f"teams/{team_name}")
+2025-01-17 13:07:30,135 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client.py", line 12, in wrapper
+2025-01-17 13:07:30,135 - WARNING - stderr:     return func(*args, **kwargs)
+2025-01-17 13:07:30,135 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/TournamentApp/TournamentApp/src/data_client.py", line 24, in fetch_data
+2025-01-17 13:07:30,136 - WARNING - stderr:     response = requests.get(url)
+2025-01-17 13:07:30,136 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/api.py", line 73, in get
+2025-01-17 13:07:30,136 - WARNING - stderr:     return request("get", url, params=params, **kwargs)
+2025-01-17 13:07:30,137 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/api.py", line 59, in request
+2025-01-17 13:07:30,137 - WARNING - stderr:     return session.request(method=method, url=url, **kwargs)
+2025-01-17 13:07:30,137 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/sessions.py", line 589, in request
+2025-01-17 13:07:30,138 - WARNING - stderr:     resp = self.send(prep, **send_kwargs)
+2025-01-17 13:07:30,138 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/sessions.py", line 703, in send
+2025-01-17 13:07:30,139 - WARNING - stderr:     r = adapter.send(request, **kwargs)
+2025-01-17 13:07:30,139 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/requests/adapters.py", line 667, in send
+2025-01-17 13:07:30,140 - WARNING - stderr:     resp = conn.urlopen(
+2025-01-17 13:07:30,140 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 789, in urlopen
+2025-01-17 13:07:30,140 - WARNING - stderr:     response = self._make_request(
+2025-01-17 13:07:30,141 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connectionpool.py", line 495, in _make_request
+2025-01-17 13:07:30,141 - WARNING - stderr:     conn.request(
+2025-01-17 13:07:30,141 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connection.py", line 441, in request
+2025-01-17 13:07:30,142 - WARNING - stderr:     self.endheaders()
+2025-01-17 13:07:30,142 - WARNING - stderr:   File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+2025-01-17 13:07:30,143 - WARNING - stderr:     self._send_output(message_body, encode_chunked=encode_chunked)
+2025-01-17 13:07:30,143 - WARNING - stderr:   File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+2025-01-17 13:07:30,144 - WARNING - stderr:     self.send(msg)
+2025-01-17 13:07:30,144 - WARNING - stderr:   File "/usr/lib/python3.10/http/client.py", line 976, in send
+2025-01-17 13:07:30,145 - WARNING - stderr:     self.connect()
+2025-01-17 13:07:30,145 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connection.py", line 279, in connect
+2025-01-17 13:07:30,146 - WARNING - stderr:     self.sock = self._new_conn()
+2025-01-17 13:07:30,146 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/connection.py", line 199, in _new_conn
+2025-01-17 13:07:30,147 - WARNING - stderr:     sock = connection.create_connection(
+2025-01-17 13:07:30,147 - WARNING - stderr:   File "/home/jakub/PycharmProjects/pythonProject1/.venv/lib/python3.10/site-packages/urllib3/util/connection.py", line 73, in create_connection
+2025-01-17 13:07:30,147 - WARNING - stderr:     sock.connect(sa)
+2025-01-17 13:07:30,147 - WARNING - stderr: KeyboardInterrupt

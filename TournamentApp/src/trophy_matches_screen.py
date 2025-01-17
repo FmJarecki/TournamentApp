@@ -1,6 +1,6 @@
 from kivy.uix.screenmanager import Screen
 from math import log2, ceil
-from db_handler import TournamentDatabase
+from data_client import get_all_teams
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
 from ranking_table import RankingTable
@@ -9,7 +9,6 @@ from kivy.core.window import Window
 class TrophyMatchesScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.db = TournamentDatabase()
         self.build()
 
     def build(self):
@@ -36,7 +35,7 @@ class TrophyMatchesScreen(Screen):
 
 
     def generate_bracket_eliminations(self):
-        teams = self.db.get_teams()
+        teams = get_all_teams()
         num_teams = len(teams)
         next_power_of_two = 2 ** ceil(log2(num_teams))
         num_byes = next_power_of_two - num_teams
@@ -63,7 +62,7 @@ class TrophyMatchesScreen(Screen):
         return rounds
 
     def generate_bracket_robin_round(self):
-        teams = self.db.get_teams()
+        teams = get_all_teams()
         num_teams = len(teams)
         rounds = []
         if num_teams % 2 == 1:
