@@ -1,9 +1,7 @@
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.graphics import RoundedRectangle, Color
-
 from config import DARK_BUTTONS_COLOR, BRIGHT_BUTTONS_COLOR
-
 
 class RoundedButton(Button):
     def __init__(self, **kwargs):
@@ -27,3 +25,18 @@ class RoundedButton(Button):
     def update_font_size(self, *args):
         self.font_size = self.height * 0.4
         self.text_size = self.size
+
+    @staticmethod
+    def create_button(text, clicked_action=lambda text: print(text), active=False):
+        button = RoundedButton(
+            text=text,
+            size_hint=(1, 1)
+        )
+        if active:
+            button = RoundedButton(
+                text=f"[b]{text}[/b]",
+                markup=True,
+                size_hint=(1, 1)
+            )
+        button.bind(on_press=lambda x, button_text=text: clicked_action(button_text))
+        return button
