@@ -21,14 +21,13 @@ class TrophyMatchesScreen(Screen):
     @staticmethod
     def _generate_trophy_table(rounds, robin_round = True):
         rounds_num = len(rounds) - (1 if not robin_round else 0)
-        print(rounds_num)
         layout = BoxLayout(orientation='vertical', size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
 
         for i in range(1, rounds_num + 1):
             data_rounds = list(rounds[i-1])
             data_rounds_results = [(team1, str(0), str(0), team2) for team1, team2 in data_rounds]
-            table = Table(headers=None, data=data_rounds_results, title=f"Round {i}")
+            table = Table(headers=None, data=data_rounds_results, rows_font_multiplier = 0.04, title=f"Round {i}")
             layout.add_widget(table)
 
         root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))

@@ -4,7 +4,7 @@ from rounded_button import RoundedButton
 from kivy.core.window import Window
 
 class Table(BoxLayout):
-    def __init__(self, data , headers = None, title = None, title_font_multiplier = 0.055, rows_font_multiplier = 0.04,headers_sorting = False, **kwargs):
+    def __init__(self, data , headers = None, title = None, title_font_multiplier = 0.055, headers_front_multiplier = 0.035, rows_font_multiplier = 0.03,headers_sorting = False, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
 
@@ -16,6 +16,7 @@ class Table(BoxLayout):
         self.title = title
         self.headers = headers
         self.title_font_multiplier = title_font_multiplier
+        self.headers_front_multiplier = headers_front_multiplier
         self.rows_font_multiplier = rows_font_multiplier
         self.headers_sorting = headers_sorting
         self.rows_layout = None
@@ -36,9 +37,9 @@ class Table(BoxLayout):
 
         for i, header in enumerate(self.headers):
             if self.headers_sorting:
-                button = RoundedButton.create_button(header, lambda btn, col=i: self.sort_by_column(col), False)
+                button = RoundedButton.create_button(header, lambda btn, col=i: self._sort_by_column(col), False, font_size_multiplier = self.headers_front_multiplier)
             else:
-                button = RoundedButton.create_button(header, None, False)
+                button = RoundedButton.create_button(header, None, False, font_size_multiplier = self.headers_front_multiplier)
             layout.add_widget(button)
         self.add_widget(layout)
 
