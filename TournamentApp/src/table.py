@@ -1,13 +1,10 @@
-from docutils.nodes import title
 from kivy.uix.label import Label
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from rounded_button import RoundedButton
 from kivy.core.window import Window
 
 class Table(BoxLayout):
-    def __init__(self, headers, data, title = None, title_font_multiplier = 0.055, rows_font_multiplier = 0.04,headers_sorting = False, **kwargs):
+    def __init__(self, data , headers = None, title = None, title_font_multiplier = 0.055, rows_font_multiplier = 0.04,headers_sorting = False, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
 
@@ -23,13 +20,13 @@ class Table(BoxLayout):
         self.headers_sorting = headers_sorting
         self.rows_layout = None
         if self.title:
-            self.fill_title()
+            self._fill_title()
 
         if self.headers:
-           self.fill_headers()
-        self.fill_rows()
+           self._fill_headers()
+        self._fill_rows()
 
-    def fill_headers(self):
+    def _fill_headers(self):
         screen_width, screen_height = Window.size
         top_padding = screen_height * 0.8 * self.rows_font_multiplier
         if self.title is not None:
@@ -45,7 +42,7 @@ class Table(BoxLayout):
             layout.add_widget(button)
         self.add_widget(layout)
 
-    def fill_rows(self):
+    def _fill_rows(self):
         screen_width, screen_height = Window.size
         if self.rows_layout is not None:
             self.remove_widget(self.rows_layout)
@@ -66,7 +63,7 @@ class Table(BoxLayout):
         self.add_widget(self.rows_layout)
 
 
-    def fill_title(self):
+    def _fill_title(self):
         screen_width, screen_height = Window.size
         title_label = Label(
             text=self.title,
@@ -80,15 +77,15 @@ class Table(BoxLayout):
         )
         self.add_widget(title_label)
 
-    def update_table(self):
+    def _update_table(self):
         self.clear_widgets()
         if self.title:
-            self.fill_title()
+            self._fill_title()
         if self.headers:
-           self.fill_headers()
-        self.fill_rows()
+           self._fill_headers()
+        self._fill_rows()
 
-    def sort_by_column(self, column_index):
+    def _sort_by_column(self, column_index):
         self.sort_order[column_index] = not self.sort_order[column_index]
         self.data.sort(key=lambda x: x[column_index], reverse = self.sort_order[column_index])
-        self.fill_rows()
+        self._fill_rows()
