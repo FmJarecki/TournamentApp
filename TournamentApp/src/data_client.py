@@ -44,3 +44,9 @@ def get_team(team_name: str) -> dict:
 
 def get_all_players_from_team(team_name: str) -> list[dict]:
     return fetch_data(f"teams/{team_name}/players")
+
+def get_all_matches():
+    return fetch_data("matches")
+
+def get_matches_by_round(round_number: int):
+    return fetch_data(f"matches/{round_number}")

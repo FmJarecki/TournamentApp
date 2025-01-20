@@ -1,6 +1,6 @@
 from kivy.uix.screenmanager import Screen
 from math import log2, ceil
-from data_client import get_all_teams
+from data_client import get_all_teams, get_all_matches#, get_matches_by_round
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.boxlayout import BoxLayout
 from table import Table
@@ -20,14 +20,18 @@ class TrophyMatchesScreen(Screen):
 
     @staticmethod
     def _generate_trophy_table(rounds, robin_round = True):
-        rounds_num = len(rounds) - (1 if not robin_round else 0)
+        matches = get_all_matches()
+        rounds_num = max(match['round'] for match in matches)
         layout = BoxLayout(orientation='vertical', size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
-
-        for i in range(1, rounds_num + 1):
-            data_rounds = list(rounds[i-1])
-            data_rounds_results = [(team1, str(0), str(0), team2) for team1, team2 in data_rounds]
-            table = Table(headers=None, data=data_rounds_results, rows_font_multiplier = 0.04, title=f"Round {i}")
+        for round_num in range(1, rounds_num + 1):
+            round_matches = [match for match in matches if match['round'] == round_num]
+            #round_matches = get_matches_by_round(round_num)
+            data_rounds_results = [
+                (match['teams'][0], str(match['scores'][0]), str(match['scores'][1]), match['teams'][1])
+                for match in round_matches
+            ]
+            table = Table(headers=None, data=data_rounds_results, rows_font_multiplier = 0.04, title=f"Round {round_num}")
             layout.add_widget(table)
 
         root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))

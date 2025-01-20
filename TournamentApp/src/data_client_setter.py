@@ -117,9 +117,14 @@ def generate_fake_data(players_per_team: int = 15, total_teams: int = 3) -> None
         "Mariani", "Mancini", "Ruggiero", "Palumbo", "Serafini", "Fontana"
     ]
 
+    teams = []
+
+    # Add teams and players
     for team_index in range(total_teams):
         team_name = f"Team {chr(65 + team_index)}"
-        add_team(team_name)
+        print(team_name)
+        if add_team(team_name):
+            teams.append(team_name)
         players = set()
         positions = list(Position)
 
@@ -149,3 +154,27 @@ def generate_fake_data(players_per_team: int = 15, total_teams: int = 3) -> None
             number = random.randint(1, 99)
             position = random.choice(positions)
             add_player(name, number, team_name, position, is_starting=False)
+
+    num_teams = len(teams)
+    if num_teams < 2:
+        logging.error("At least 2 teams are required for matches.")
+        return
+
+    if num_teams % 2 == 1:
+        teams.append("BYE")
+
+    num_teams = len(teams)
+    num_rounds = num_teams - 1
+    matches_per_round = num_teams // 2
+
+    for round_num in range(num_rounds):
+        for match_index in range(matches_per_round):
+            team1 = teams[match_index]
+            team2 = teams[-1 - match_index]
+            if "BYE" not in (team1, team2):
+                score1 = random.randint(0, 5)
+                score2 = random.randint(0, 5)
+                add_match(round_num + 1, [team1, team2], [score1, score2])
+        teams = [teams[0]] + [teams[-1]] + teams[1:-1]
+
+

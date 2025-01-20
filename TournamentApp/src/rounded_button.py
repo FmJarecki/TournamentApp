@@ -5,7 +5,7 @@ from config import DARK_BUTTONS_COLOR, BRIGHT_BUTTONS_COLOR
 from kivy.core.window import Window
 
 class RoundedButton(Button):
-    def __init__(self, font_size_multiplier = 0.03, **kwargs):
+    def __init__(self, font_size_multiplier = 0.07, **kwargs):
         super().__init__(**kwargs)
         self.background_color = (0, 0, 0, 0)
         self.background_normal = ''
@@ -13,6 +13,7 @@ class RoundedButton(Button):
         self.halign = 'center'
         self.valign = 'middle'
         self.font_size_multiplier = font_size_multiplier
+        self.text_size = self.size
         self.bind(size=self.update_font_size)
 
     def on_size(self, *args):
@@ -29,7 +30,7 @@ class RoundedButton(Button):
         self.font_size = min(screen_width, screen_height) * self.font_size_multiplier
         self.text_size = self.size
     @staticmethod
-    def create_button(text, clicked_action=lambda text: print(text), active=False, font_size_multiplier = 0.03):
+    def create_button(text, clicked_action=lambda text: print(text), active=False, font_size_multiplier = 0.07):
         button = RoundedButton(
             text=text,
             font_size_multiplier = font_size_multiplier,
