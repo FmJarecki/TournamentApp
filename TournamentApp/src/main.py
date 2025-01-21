@@ -40,7 +40,7 @@ if __name__ == '__main__':
     SettingsDB.initialize_database()
 
     clear_data()
-    generate_fake_data(players_per_team=8, total_teams=4)
+    generate_fake_data(players_per_team=8, total_teams=3)
 
     app = KVApp(SettingsDB.get_dark_theme_setting())
     app.run()

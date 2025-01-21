@@ -156,10 +156,6 @@ def generate_fake_data(players_per_team: int = 15, total_teams: int = 3) -> None
             add_player(name, number, team_name, position, is_starting=False)
 
     num_teams = len(teams)
-    if num_teams < 2:
-        logging.error("At least 2 teams are required for matches.")
-        return
-
     if num_teams % 2 == 1:
         teams.append("BYE")
 
@@ -172,9 +168,8 @@ def generate_fake_data(players_per_team: int = 15, total_teams: int = 3) -> None
             team1 = teams[match_index]
             team2 = teams[-1 - match_index]
             if "BYE" not in (team1, team2):
-                score1 = random.randint(0, 5)
-                score2 = random.randint(0, 5)
-                add_match(round_num + 1, [team1, team2], [score1, score2])
+                add_match(round_num + 1, [team1, team2],[random.randint(0,5), random.randint(0,5)])
         teams = [teams[0]] + [teams[-1]] + teams[1:-1]
+
 
 
