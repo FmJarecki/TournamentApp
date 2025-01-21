@@ -122,9 +122,9 @@ def generate_fake_data(players_per_team: int = 15, total_teams: int = 3) -> None
     # Add teams and players
     for team_index in range(total_teams):
         team_name = f"Team {chr(65 + team_index)}"
-        print(team_name)
-        if add_team(team_name):
-            teams.append(team_name)
+        if team_name not in teams:
+            if add_team(team_name):
+                teams.append(team_name)
         players = set()
         positions = list(Position)
 
@@ -155,6 +155,8 @@ def generate_fake_data(players_per_team: int = 15, total_teams: int = 3) -> None
             position = random.choice(positions)
             add_player(name, number, team_name, position, is_starting=False)
 
+    if len(teams) < 2 :
+        return
     num_teams = len(teams)
     if num_teams % 2 == 1:
         teams.append("BYE")

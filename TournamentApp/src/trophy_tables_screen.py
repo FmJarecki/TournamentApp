@@ -10,8 +10,10 @@ class TrophyTablesScreen(Screen):
         super().__init__(**kwargs)
         self.build()
 
-    @staticmethod
-    def _generate_results_table(headers, teams, matches = None):
+    def _generate_results_table(self):
+        teams = get_all_teams()
+        matches = get_all_matches()
+        headers = ['Rank' , 'Team', 'MP', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
         data = []
         if not matches:
             for i, team in enumerate(teams):
@@ -27,7 +29,7 @@ class TrophyTablesScreen(Screen):
         else:
             teams_stats = []
             for team in teams:
-                stats = TrophyTablesScreen.count_team_stats(team, matches)
+                stats = TrophyTablesScreen._count_team_stats(team, matches)
                 teams_stats.append(stats)
             teams_stats.sort(key=lambda x: (x["Pts"], x["GD"], x["GF"]), reverse=True)
 
@@ -56,10 +58,14 @@ class TrophyTablesScreen(Screen):
                         table_row.append(str(stats["Pts"]))
                 data.append(table_row)
 
-        return data
+
+        table = Table(headers=headers, data=data, headers_sorting=True)
+        root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))  # , bar_width=10)
+        root.add_widget(table)
+        self.add_widget(root)
 
     @staticmethod
-    def count_team_stats(team, matches: list[dict]) -> dict:
+    def _count_team_stats(team, matches: list[dict]) -> dict:
         stats = dict.fromkeys(['matches','wins','losses','draws'], 0)
         stats["team_name"] = team['name']
         stats["GF"] = team['total_goals']
@@ -82,11 +88,4 @@ class TrophyTablesScreen(Screen):
         return stats
 
     def build(self):
-        teams = get_all_teams()
-        matches = get_all_matches()
-        headers = ['Rank' , 'Team', 'MP', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Pts']
-        data = self._generate_results_table(headers, teams, matches)
-        table = Table(headers=headers, data=data,headers_sorting=True)
-        root = ScrollView(size_hint=(1, 1), size=(Window.width, Window.height))#, bar_width=10)
-        root.add_widget(table)
-        self.add_widget(root)
+        self._generate_results_table()
