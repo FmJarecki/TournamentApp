@@ -1,5 +1,7 @@
 import json
 import os
+from datetime import datetime
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field, model_validator
 
@@ -23,12 +25,17 @@ class Team(BaseModel):
     total_goals: int = 0
     conceded_goals: int = 0
     points: int = 0
+    group: str = ''
 
 
 class Match(BaseModel):
     round: int
     teams: list[str]
     scores: list[int]
+    date: str
+    stadium: str
+    localization: tuple[float, float]
+    scorers: dict[str, list[dict[str, dict]]]
 
     @model_validator(mode="before")
     def check_teams_and_scores(cls, values):
@@ -130,13 +137,18 @@ def get_teams():
     return teams
 
 
-@app.get("/teams/{team_name}")
+@app.get("/teams/name/{team_name}")
 def get_team(team_name: str):
     return find_team(team_name)
 
 
+@app.get("/teams/group/{group}")
+def get_teams_from_group(group: str) -> list[dict]:
+    return [team for team in teams if team["group"] == group]
+
+
 @app.get("/teams/{team_name}/players")
-def get_team_players(team_name: str):
+def get_team_players(team_name: str) -> list[dict]:
     find_team(team_name)
     team_players = [player for player in players if player["team"] == team_name]
     if not team_players:
@@ -149,19 +161,33 @@ def update_player_goals(name: str, number: int, goals: int):
     player = find_player(name, number)
     player["goals"] += goals
     save_players()
-    update_team_stats(player["team"], scored=goals)
+    update_team_stats(player["team"])
     return {"message": "Player goals updated"}
 
 
-def update_team_stats(team_name: str, scored: int = 0, conceded: int = 0):
+def update_team_stats(team_name: str):
     team = find_team(team_name)
-    team["total_goals"] += scored
-    team["conceded_goals"] += conceded
+    team["total_goals"] = 0
+    team["conceded_goals"] = 0
+    team["points"] = 0
 
-    if scored > conceded:
-        team["points"] += 3
-    elif scored == conceded:
-        team["points"] += 1
+    for match in matches:
+        if team_name in match["teams"]:
+            match_datetime = datetime.fromisoformat(match["date"])
+            now = datetime.now()
+
+            if match_datetime <= now:
+                team_index = match["teams"].index(team_name)
+                scored_goals = match["scores"][team_index]
+                conceded_goals = sum(match["scores"]) - scored_goals
+
+                team["total_goals"] += scored_goals
+                team["conceded_goals"] += conceded_goals
+
+                if scored_goals > conceded_goals:
+                    team["points"] += 3
+                elif scored_goals == conceded_goals:
+                    team["points"] += 1
     save_teams()
 
 
@@ -175,11 +201,19 @@ def add_match(match: Match):
     matches.append(match_data)
     save_matches()
 
-    for i, team_name in enumerate(match.teams):
-        scored = match.scores[i]
-        conceded = sum(match.scores) - scored
-        update_team_stats(team_name, scored=scored, conceded=conceded)
+    for team_name in match.teams:
+        update_team_stats(team_name)
     return {"message": "Match added"}
+
+
+@app.get("/sorted_time_matches/")
+def get_time_sorted_matches():
+    sorted_matches: list[dict] = sorted(
+        matches,
+        key=lambda x: datetime.strptime(x["date"], "%Y-%m-%d %H:%M"),
+        reverse=False
+    )
+    return sorted_matches
 
 
 @app.get("/matches/")

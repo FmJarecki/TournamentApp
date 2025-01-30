@@ -2,39 +2,50 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.widget import Widget
 from kivy.uix.image import AsyncImage
 from kivy.resources import resource_find
 
 from icon_button import IconButton
-from config import IMAGES_PATH, DARK_IMAGES_PATH, BRIGHT_IMAGES_PATH
+from config import IMAGES_PATH, DARK_IMAGES_PATH, BRIGHT_IMAGES_PATH, DARK_COLOR, BRIGHT_COLOR
 
 
 class PlayerScreen(Screen):
-    def __init__(self, player_name: str, **kwargs):
+    def __init__(self, player_name: str, number: str, **kwargs):
         super().__init__(**kwargs)
-        self.player_name = player_name
-        self.build()
 
-    def build(self):
         layout = BoxLayout(
             orientation="vertical",
         )
 
+        back_button_layout = BoxLayout(
+            orientation="horizontal",
+
+            size_hint_y=0.1,
+        )
         if App.get_running_app().is_dark_theme:
-            back_button = IconButton(self.handle_back,
-                                     0.05,
-                                     0.1,
-                                     f'{DARK_IMAGES_PATH}/back_arrow.png')
-            text = f"[color=#D9D9D9]{self.player_name}"
+            back_button = IconButton(
+                self.handle_back,
+                icon_x_pos=0.1,
+                icon_path=f'{DARK_IMAGES_PATH}/back_arrow.png',
+            )
+            text = f"[color={DARK_COLOR}]{player_name}"
         else:
-            back_button = IconButton(self.handle_back,
-                                     0.05,
-                                     0.1,
-                                     f'{BRIGHT_IMAGES_PATH}/back_arrow.png')
-            text = f"[color=#434343]{self.player_name}"
-        layout.add_widget(back_button)
+            back_button = IconButton(
+                self.handle_back,
+                icon_x_pos=0.1,
+                icon_path=f'{BRIGHT_IMAGES_PATH}/back_arrow.png',
+            )
+            text = f"[color={BRIGHT_COLOR}]{player_name}"
+
+        back_button_layout.add_widget(back_button)
+        back_button_layout.add_widget(Widget())
+        back_button_layout.add_widget(Widget())
+        layout.add_widget(back_button_layout)
+
         image = AsyncImage(
-            source=resource_find(f'{IMAGES_PATH}/default_player.png')
+            source=resource_find(f'{IMAGES_PATH}/default_player.png'),
+            fit_mode = "fill"
         )
         layout.add_widget(image)
 

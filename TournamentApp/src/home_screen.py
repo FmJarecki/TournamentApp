@@ -5,12 +5,11 @@ from kivy.uix.widget import Widget
 from kivy.uix.image import Image
 from kivy.graphics import Color, Rectangle
 
-from teams_screen import TeamListScreen
-from map_screen import MapScreen
+from team_screen import TeamScreen
 from settings_screen import SettingsScreen
-from trophy_screen import TrophyScreen
 from icon_button import IconButton
 from config import DARK_IMAGES_PATH, BRIGHT_IMAGES_PATH, DARK_THEME_COLOR, BRIGHT_THEME_COLOR, IMAGES_PATH
+from match_layout import MatchesScreen
 
 
 class HomeScreen(Screen):
@@ -21,9 +20,9 @@ class HomeScreen(Screen):
 
         self.main_layout = BoxLayout(orientation='horizontal')
         self.screen_manager = ScreenManager()
-        self.screen_manager.add_widget(TrophyScreen(name='trophy'))
-        self.screen_manager.add_widget(ProfileView(name='profile'))
-        self.screen_manager.add_widget(MapScreen(name='map'))
+
+        self.screen_manager.add_widget(MatchesScreen(name='matches'))
+        self.screen_manager.add_widget(TeamScreen(name='team'))
         self.screen_manager.add_widget(self.settings)
         self.main_layout.add_widget(self.screen_manager)
 
@@ -40,7 +39,7 @@ class HomeScreen(Screen):
             size_hint_y=0.1,
             orientation='horizontal'
         )
-        self.settings_button = IconButton(self.on_settings_press, 0.1)
+        self.settings_button = IconButton(self.on_settings_press, icon_x_pos=0.1)
         top_layout.add_widget(self.settings_button)
 
         top_layout.add_widget(
@@ -50,21 +49,7 @@ class HomeScreen(Screen):
         )
         top_layout.add_widget(Widget())
 
-        options_layout = BoxLayout(
-            size_hint_y=0.1,
-            orientation='horizontal'
-        )
-        self.trophy_button = IconButton(self.on_trophy_press)
-        self.teams_button = IconButton(self.on_teams_press)
-        self.profile_button = IconButton(self.on_profile_press)
-        self.map_button = IconButton(self.on_map_press)
-        options_layout.add_widget(self.trophy_button)
-        options_layout.add_widget(self.teams_button)
-        options_layout.add_widget(self.profile_button)
-        options_layout.add_widget(self.map_button)
-
         main_container.add_widget(top_layout)
-        main_container.add_widget(options_layout)
         main_container.add_widget(self.main_layout)
 
         self.add_widget(main_container)
@@ -75,54 +60,13 @@ class HomeScreen(Screen):
         if App.get_running_app().is_dark_theme:
             self.bg_color.rgba = DARK_THEME_COLOR
             self.settings_button.update_icon(f'{DARK_IMAGES_PATH}/settings.png')
-            self.trophy_button.update_icon(f'{DARK_IMAGES_PATH}/trophy.png')
-            self.teams_button.update_icon(f'{DARK_IMAGES_PATH}/teams.png')
-            self.profile_button.update_icon(f'{DARK_IMAGES_PATH}/person.png')
-            self.map_button.update_icon(f'{DARK_IMAGES_PATH}/map.png')
         else:
             self.bg_color.rgba = BRIGHT_THEME_COLOR
             self.settings_button.update_icon(f'{BRIGHT_IMAGES_PATH}/settings.png')
-            self.trophy_button.update_icon(f'{BRIGHT_IMAGES_PATH}/trophy.png')
-            self.teams_button.update_icon(f'{BRIGHT_IMAGES_PATH}/teams.png')
-            self.profile_button.update_icon(f'{BRIGHT_IMAGES_PATH}/person.png')
-            self.map_button.update_icon(f'{BRIGHT_IMAGES_PATH}/map.png')
 
     def _update_rect(self, *args):
         self.rect.size = self.size
         self.rect.pos = self.pos
 
-    def on_trophy_press(self, instance):
-        self.screen_manager.current = 'trophy'
-
-    def on_teams_press(self, instance):
-        screen_name = 'teams'
-        if screen_name in self.screen_manager.screen_names:
-            screen_to_remove = self.screen_manager.get_screen(screen_name)
-            self.screen_manager.remove_widget(screen_to_remove)
-
-        if 'Player' in self.screen_manager.screen_names:
-            screen_to_remove = self.screen_manager.get_screen('Player')
-            self.screen_manager.remove_widget(screen_to_remove)
-
-        self.screen_manager.add_widget(TeamListScreen(name=screen_name))
-        self.screen_manager.current = 'teams'
-
-    def on_profile_press(self, instance):
-        self.screen_manager.current = 'profile'
-
-    def on_map_press(self, instance):
-        self.screen_manager.current = 'map'
-
     def on_settings_press(self, instance):
         self.screen_manager.current = 'settings'
-
-
-
-
-class ProfileView(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.add_widget(Image(
-                source=f'{BRIGHT_IMAGES_PATH}/football.png'
-            )
-        )

@@ -14,7 +14,7 @@ icon.filename = data/app_icon.png
 source.include_exts = py, png
 source.include_patterns = images/*
 
-requirements = kivy,requests
+requirements = kivy, requests
 android.permissions = INTERNET
 
 orientation = portrait

@@ -8,16 +8,19 @@ from typing import Callable, Any
 class IconButton(FloatLayout):
     def __init__(self,
                  callback: Callable[[Any], None],
-                 x_pos: float = 0.5,
+                 icon_x_pos: float = 0.5,
+                 icon_y_pos: float = 0.5,
                  icon_path: str = '',
-                 icon_size = (0.5, 0.5),
-                 btn_size = (1.0 ,1.0),
+                 icon_size: tuple[float, float] = (0.5, 0.5),
+                 icon_fit_mode: str = 'contain',
+                 btn_size: tuple[float, float] = (1.0 ,1.0),
                  **kwargs
                  ):
         super().__init__(**kwargs)
         icon = Image(
             size_hint=icon_size,
-            pos_hint={'center_x': x_pos, 'center_y': 0.5}
+            pos_hint={'center_x': icon_x_pos, 'center_y': icon_y_pos},
+            fit_mode=icon_fit_mode
         )
         icon.source = icon_path if icon_path != '' else icon.source
         self.add_widget(icon)

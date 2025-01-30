@@ -4,7 +4,6 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
 
 from home_screen import HomeScreen
-from data_client_setter import generate_fake_data, clear_data
 from settings_db import SettingsDB
 
 
@@ -38,9 +37,6 @@ class KVApp(App):
 if __name__ == '__main__':
     setup_logging()
     SettingsDB.initialize_database()
-
-    clear_data()
-    generate_fake_data(players_per_team=8, total_teams=3)
 
     app = KVApp(SettingsDB.get_dark_theme_setting())
     app.run()

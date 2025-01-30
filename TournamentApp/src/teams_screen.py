@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
 from team_on_field_screen import TeamOnFieldScreen
+from team_screen import TeamScreen
 from data_client import get_all_teams
 from rounded_button import RoundedButton
 
@@ -40,10 +41,13 @@ class TeamListScreen(Screen):
         self.add_widget(layout)
 
     def team_clicked(self, team_name: str):
-        screen_name = 'Field'
+        #screen_name = 'Field'
+        screen_name = 'Team'
         if screen_name in self.parent.screen_names:
             screen_to_remove = self.parent.get_screen(screen_name)
             self.parent.remove_widget(screen_to_remove)
-        obj = TeamOnFieldScreen(team_name, name=screen_name)
+
+        #obj = TeamOnFieldScreen(team_name, name=screen_name)
+        obj = TeamScreen(team_name, name=screen_name)
         self.parent.add_widget(obj)
         self.parent.current = obj.name

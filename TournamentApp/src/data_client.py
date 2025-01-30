@@ -20,6 +20,7 @@ def handle_http_errors(func):
 
 @handle_http_errors
 def fetch_data(endpoint: str) -> list[dict] | dict:
+    print("endpoint: ", endpoint)
     url = f"{SERVER_URL}/{endpoint}/"
     response = requests.get(url)
     response.raise_for_status()
@@ -39,8 +40,16 @@ def get_all_teams() -> list[dict]:
 
 
 def get_team(team_name: str) -> dict:
-    return fetch_data(f"teams/{team_name}")
+    return fetch_data(f"teams/name/{team_name}")
 
 
 def get_all_players_from_team(team_name: str) -> list[dict]:
     return fetch_data(f"teams/{team_name}/players")
+
+
+def get_teams_from_group(group: str) -> list[dict]:
+    return fetch_data(f"teams/group/{group}")
+
+
+def get_time_sorted_matches() -> list[dict]:
+    return fetch_data(f"sorted_time_matches")
