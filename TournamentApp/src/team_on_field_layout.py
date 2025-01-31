@@ -1,4 +1,4 @@
-from kivy.uix.screenmanager import Screen
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 
@@ -8,7 +8,7 @@ from config import IMAGES_PATH, DARK_COLOR, BRIGHT_COLOR, Position
 from icon_button import IconButton
 
 
-class TeamOnFieldScreen(Screen):
+class TeamOnFieldLayout(FloatLayout):
     position_mapping = {
         Position.GK: {'x': 0.4, 'y': 0.08},
         Position.LB: {'x': 0.15, 'y': 0.2},
@@ -29,15 +29,6 @@ class TeamOnFieldScreen(Screen):
             fit_mode="fill"
         )
         self.add_widget(stadium)
-
-        self.title = Label(
-            text=f"[b][color={DARK_COLOR}]{team_name}[/color][/b]",
-            markup=True,
-            size_hint=(0.1, 0.1),
-            font_size='40sp',
-            pos_hint={'x': 0.45, 'y': 0.85}
-        )
-        self.add_widget(self.title)
 
         self.players_buttons = []
         self.labels = []
@@ -79,7 +70,6 @@ class TeamOnFieldScreen(Screen):
                 self.add_widget(icon_btn)
                 self.add_widget(name)
                 self.add_widget(number)
-
 
     def on_player_press(self, player: str, number: str):
         player_view = PlayerScreen(player, number, name='Player')

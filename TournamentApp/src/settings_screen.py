@@ -3,10 +3,13 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.switch import Switch
 from kivy.uix.label import Label
+from kivy.uix.widget import Widget
 
+from matches_screen import MatchesScreen
 from settings_db import SettingsDB
 from text_fields import get_text
-from config import DARK_COLOR, BRIGHT_COLOR
+from icon_button import IconButton
+from config import DARK_COLOR, BRIGHT_COLOR, DARK_IMAGES_PATH, BRIGHT_IMAGES_PATH
 
 
 class SettingsScreen(Screen):
@@ -18,8 +21,26 @@ class SettingsScreen(Screen):
             orientation="vertical",
         )
 
-        theme_layout = BoxLayout(
+        back_button_layout = BoxLayout(
             orientation="horizontal",
+            size_hint_y=0.1
+        )
+
+        back_button_icon_path = (f"{DARK_IMAGES_PATH}/back_arrow.png" if App.get_running_app().is_dark_theme
+                                  else f"{BRIGHT_IMAGES_PATH}/back_arrow.png")
+        self.back_button = IconButton(
+            self._handle_back,
+            icon_x_pos=0.1,
+            icon_path=back_button_icon_path,
+        )
+
+        back_button_layout.add_widget(self.back_button)
+        back_button_layout.add_widget(Widget())
+        back_button_layout.add_widget(Widget())
+        layout.add_widget(back_button_layout)
+
+        theme_layout = BoxLayout(
+            orientation="horizontal"
         )
 
         text = f"[color={DARK_COLOR}]{get_text('dark_theme')}[/color]" if App.get_running_app().is_dark_theme\
@@ -43,4 +64,12 @@ class SettingsScreen(Screen):
         App.get_running_app().is_dark_theme = value
         self.home_screen.update_background_color()
         self.theme_label.text = "[color=#D9D9D9]Dark theme[/color]" if value else "[color=#434343]Dark theme[/color]"
+        self.back_button.update_icon(f"{DARK_IMAGES_PATH}/back_arrow.png" if value else f"{BRIGHT_IMAGES_PATH}/back_arrow.png")
         SettingsDB.set_dark_theme_setting(value)
+
+    def _handle_back(self, instance):
+        if 'matches' in self.parent.screen_names:
+            matches_screen = self.parent.get_screen('matches')
+            self.parent.remove_widget(matches_screen)
+        self.parent.add_widget(MatchesScreen(name='matches'))
+        self.parent.current = 'matches'

@@ -11,6 +11,7 @@ from points_table import PointsTable
 from config import IMAGES_PATH, DARK_COLOR, BRIGHT_COLOR
 from map import open_maps
 from data_client import get_team, get_time_sorted_matches
+from team_screen import TeamScreen
 
 
 class MatchesScreen(Screen):
@@ -18,7 +19,6 @@ class MatchesScreen(Screen):
         super(MatchesScreen, self).__init__(**kwargs)
         self._matches: list[dict] = get_time_sorted_matches()
         self._match_iter = 0
-
         self.touch_start_pos = None
         self.touch_start_time = None
 
@@ -65,8 +65,9 @@ class MatchesScreen(Screen):
             for child in self.layout.children:
                 if isinstance(child, MatchLayout):
                     if child.team_1_icon.collide_point(*touch.pos):
-                        self.manager.get_screen('team').team_name = self._matches[self._match_iter]['teams'][0]
-                        self.manager.current = 'team'
+                        team_obj = TeamScreen(self._matches[self._match_iter]['teams'][0], name="team")
+                        self.parent.add_widget(team_obj)
+                        self.parent.current = team_obj.name
                         print("Kliknieto pierwsza ikone")
                         return True
                     elif child.team_2_icon.collide_point(*touch.pos):

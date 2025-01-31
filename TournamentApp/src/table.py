@@ -26,16 +26,20 @@ class Table(BoxLayout):
 
     def _fill_header(self):
         layout = BoxLayout(orientation='horizontal', size_hint_y=0.2)
-        for header in self.data[0].keys():
-            button_layout = BoxLayout(orientation='horizontal')
+        for index, header in enumerate(self.data[0].keys()):
+            x_size: float = 1/(len(self.data)+1) if index !=0 else 2/(len(self.data)+1)
+            widget_size_hint_x: float = 0.1 if index != 0 else 0.05
+            button_size_hint_x: float = 0.8 if index != 0 else 0.9
+            button_layout = BoxLayout(orientation='horizontal', size_hint = (x_size, 1))
             button = RoundedButton(
                 text=header,
                 on_press=lambda x, data=header: self._sort_by_column(data),
-                size_hint_x = 0.8
+                size_hint_x = button_size_hint_x
             )
-            button_layout.add_widget(Widget(size_hint_x = 0.1))
+
+            button_layout.add_widget(Widget(size_hint_x = widget_size_hint_x))
             button_layout.add_widget(button)
-            button_layout.add_widget(Widget(size_hint_x = 0.1))
+            button_layout.add_widget(Widget(size_hint_x = widget_size_hint_x))
 
             layout.add_widget(button_layout)
 
@@ -45,11 +49,13 @@ class Table(BoxLayout):
         for row in self.data:
             row_layout = BoxLayout(orientation='horizontal', size_hint_y=0.2)
             row_layout.is_row = True
-            for cell in row.values():
+            for index, cell in enumerate(row.values()):
+                x_size: float = 1 / (len(row) + 1) if index != 0 else 2 / (len(row) + 1)
                 label = Label(
                     text=f"[b][color={self._text_color }]{cell}[/color][/b]",
                     markup=True,
                     font_size='15sp',
+                    size_hint_x = x_size
                 )
                 row_layout.add_widget(label)
             self.add_widget(row_layout)

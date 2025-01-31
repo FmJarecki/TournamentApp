@@ -2,7 +2,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
-from team_on_field_screen import TeamOnFieldScreen
+from team_on_field_layout import TeamOnFieldLayout
 from team_screen import TeamScreen
 from data_client import get_all_teams
 from rounded_button import RoundedButton

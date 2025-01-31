@@ -5,11 +5,10 @@ from kivy.uix.widget import Widget
 from kivy.uix.image import Image
 from kivy.graphics import Color, Rectangle
 
-from team_screen import TeamScreen
 from settings_screen import SettingsScreen
 from icon_button import IconButton
 from config import DARK_IMAGES_PATH, BRIGHT_IMAGES_PATH, DARK_THEME_COLOR, BRIGHT_THEME_COLOR, IMAGES_PATH
-from match_layout import MatchesScreen
+from matches_screen import MatchesScreen
 
 
 class HomeScreen(Screen):
@@ -22,8 +21,9 @@ class HomeScreen(Screen):
         self.screen_manager = ScreenManager()
 
         self.screen_manager.add_widget(MatchesScreen(name='matches'))
-        self.screen_manager.add_widget(TeamScreen(name='team'))
         self.screen_manager.add_widget(self.settings)
+        self.screen_manager.current = 'matches'
+
         self.main_layout.add_widget(self.screen_manager)
 
         with self.canvas.before:
