@@ -20,8 +20,7 @@ class PlayerScreen(Screen):
 
         back_button_layout = BoxLayout(
             orientation="horizontal",
-
-            size_hint_y=0.1,
+            size_hint_y=0.1
         )
         if App.get_running_app().is_dark_theme:
             back_button = IconButton(

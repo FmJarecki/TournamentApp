@@ -39,7 +39,7 @@ class HomeScreen(Screen):
             size_hint_y=0.1,
             orientation='horizontal'
         )
-        self.settings_button = IconButton(self.on_settings_press, icon_x_pos=0.1)
+        self.settings_button = IconButton(self.on_settings_press, icon_x_pos=0.2)
         top_layout.add_widget(self.settings_button)
 
         top_layout.add_widget(

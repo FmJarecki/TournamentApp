@@ -26,7 +26,7 @@ class TeamOnFieldLayout(FloatLayout):
             source=f'{IMAGES_PATH}/stadium.png',
             size_hint=(1, 1),
             pos_hint={'x': 0, 'y': 0},
-            fit_mode="fill"
+
         )
         self.add_widget(stadium)
 
@@ -54,7 +54,7 @@ class TeamOnFieldLayout(FloatLayout):
                 name = Label(
                     text=f"[b][color={DARK_COLOR}]{surname}[/color][/b]",
                     markup = True,
-                    font_size='25sp',
+                    font_size='20sp',
                     size_hint=(0.2, 0.2),
                     pos_hint={'x': icon_btn.pos_hint['x'], 'y': icon_btn.pos_hint['y']-0.07}
                 )
