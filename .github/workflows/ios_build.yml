@@ -1,0 +1,50 @@
+name: iOS Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+
+    - name: Install Homebrew
+      run: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    - name: Install dependencies
+      run: |
+        brew install pkg-config sdl2 sdl2_image sdl2_ttf sdl2_mixer
+        python -m pip install --upgrade pip
+        pip install kivy
+        pip install requests
+        pip install setuptools
+        pip install cython
+
+    - name: Install Kivy iOS dependencies
+      run: |
+        pip install kivy-ios
+        toolchain build python3 kivy
+
+    - name: Create iOS build
+      run: |
+        mkdir ios-build
+        cd ios-build
+        toolchain create TournamentApp ../TournamentApp/src/main.py
+        toolchain build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ios-build
+        path: ios-build/
