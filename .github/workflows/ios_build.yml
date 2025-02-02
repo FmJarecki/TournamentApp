@@ -50,17 +50,9 @@ jobs:
       run: |
         toolchain recipes
 
-    - name: Build Python3
+    - name: Build Kivy iOS recipes
       run: |
-        toolchain build python3
-
-    - name: Build Kivy and dependencies
-      run: |
-        toolchain build kivy
-        toolchain build sdl2
-        toolchain build sdl2_image
-        toolchain build sdl2_ttf
-        toolchain build sdl2_mixer
+        toolchain build python3 kivy
 
     - name: Create iOS build
       run: |
