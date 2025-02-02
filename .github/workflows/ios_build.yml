@@ -52,14 +52,14 @@ jobs:
 
     - name: Build Kivy iOS recipes
       run: |
-        toolchain build python3 kivy
+        toolchain build python3 kivy --debug
 
     - name: Create iOS build
       run: |
         mkdir ios-build
         cd ios-build
         toolchain create TournamentApp ../TournamentApp/src/main.py
-        toolchain build
+        toolchain build --debug
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
