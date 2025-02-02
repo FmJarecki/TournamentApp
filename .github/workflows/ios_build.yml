@@ -46,21 +46,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install kivy requests kivy-ios
 
-    - name: Check kivy-ios version
-      run: |
-        toolchain --version
-
     - name: Build Kivy iOS recipes
       run: |
-        toolchain build python3 kivy --debug
+        toolchain build python3 kivy
 
     - name: List compiled recipes
-      run: |
-        ls -R kivy-ios/dist/
-
-    - name: List downloaded files
-      run: |
-        ls -R kivy-ios/downloads/
+      run: ls -R kivy-ios/dist/
 
     - name: Create iOS build
       run: |
