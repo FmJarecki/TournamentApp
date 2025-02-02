@@ -22,43 +22,26 @@ jobs:
       run: |
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-    - name: Cache Homebrew
-      uses: actions/cache@v3
-      with:
-        path: /usr/local/Homebrew
-        key: brew-${{ runner.os }}
-
-    - name: Cache Python dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: pip-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
-
-    - name: Cache kivy-ios downloads
-      uses: actions/cache@v3
-      with:
-        path: kivy-ios/downloads
-        key: downloads-${{ runner.os }}
-
     - name: Install dependencies
       run: |
         brew install pkg-config sdl2 sdl2_image sdl2_ttf sdl2_mixer autoconf automake libtool
         python -m pip install --upgrade pip
-        pip install kivy requests kivy-ios
+        pip install kivy
+        pip install requests
+        pip install setuptools
+        pip install cython
 
-    - name: Build Kivy iOS recipes
+    - name: Install Kivy iOS dependencies
       run: |
+        pip install kivy-ios
         toolchain build python3 kivy
-
-    - name: List compiled recipes
-      run: ls -R kivy-ios/dist/
 
     - name: Create iOS build
       run: |
         mkdir ios-build
         cd ios-build
-        toolchain create TournamentApp ../src/main.py
-        toolchain build --debug
+        toolchain create TournamentApp ../TournamentApp/src/main.py
+        toolchain build
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
