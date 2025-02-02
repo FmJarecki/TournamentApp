@@ -24,7 +24,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        brew install pkg-config sdl2 sdl2_image sdl2_ttf sdl2_mixer
+        brew install pkg-config sdl2 sdl2_image sdl2_ttf sdl2_mixer autoconf automake libtool
         python -m pip install --upgrade pip
         pip install kivy
         pip install requests
