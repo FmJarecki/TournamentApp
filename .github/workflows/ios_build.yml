@@ -46,19 +46,27 @@ jobs:
         python -m pip install --upgrade pip
         pip install kivy requests kivy-ios
 
-    - name: List available recipes
+    - name: Check kivy-ios version
       run: |
-        toolchain recipes
+        toolchain --version
 
     - name: Build Kivy iOS recipes
       run: |
         toolchain build python3 kivy --debug
 
+    - name: List compiled recipes
+      run: |
+        ls -R kivy-ios/dist/
+
+    - name: List downloaded files
+      run: |
+        ls -R kivy-ios/downloads/
+
     - name: Create iOS build
       run: |
         mkdir ios-build
         cd ios-build
-        toolchain create TournamentApp ../TournamentApp/src/main.py
+        toolchain create TournamentApp ../src/main.py
         toolchain build --debug
 
     - name: Upload artifact
