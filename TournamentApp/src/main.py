@@ -5,6 +5,7 @@ from kivy.uix.screenmanager import ScreenManager
 
 from home_screen import HomeScreen
 from settings_db import SettingsDB
+from text_manager import TextManager
 
 
 def setup_logging():
@@ -24,9 +25,11 @@ def setup_logging():
 
 
 class KVApp(App):
-    def __init__(self, is_dark_theme: bool, **kwargs):
+    def __init__(self, is_dark_theme: bool, language: str, **kwargs):
         super().__init__(**kwargs)
         App.get_running_app().is_dark_theme = is_dark_theme
+        TextManager.set_language(language)
+
 
     def build(self) -> ScreenManager:
         sm = ScreenManager()
@@ -38,5 +41,8 @@ if __name__ == '__main__':
     setup_logging()
     SettingsDB.initialize_database()
 
-    app = KVApp(SettingsDB.get_dark_theme_setting())
+    app = KVApp(
+        SettingsDB.get_dark_theme_setting(),
+        SettingsDB.get_language(),
+    )
     app.run()

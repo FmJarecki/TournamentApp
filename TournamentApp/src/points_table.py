@@ -8,6 +8,7 @@ from team_screen import TeamScreen
 from rounded_button import RoundedButton
 from data_client import get_teams_from_group
 from config import DARK_COLOR, BRIGHT_COLOR
+from text_manager import TextManager
 
 
 class ClickableRow(BoxLayout):
@@ -37,10 +38,10 @@ class PointsTable(BoxLayout):
         self.data: list[dict] = []
         for team in get_teams_from_group(self.group):
             transformed_team = {
-                'Name': team.get('name', ''),
-                'PTS': team.get('points', 0),
-                'GF': team.get('total_goals', 0),
-                'GA': team.get('conceded_goals', 0)
+                'name': team.get('name', ''),
+                'pts': team.get('points', 0),
+                'gf': team.get('total_goals', 0),
+                'ga': team.get('conceded_goals', 0)
             }
             self.data.append(transformed_team)
 
@@ -59,7 +60,7 @@ class PointsTable(BoxLayout):
             button_size_hint_x: float = 0.8 if index != 0 else 0.9
             button_layout = BoxLayout(orientation='horizontal', size_hint = (x_size, 1))
             button = RoundedButton(
-                text=header,
+                text=TextManager.get_text(header),
                 on_press=lambda x, data=header: self._sort_by_column(data),
                 size_hint_x = button_size_hint_x
             )

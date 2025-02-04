@@ -14,10 +14,11 @@ class SettingsDB:
                 cursor.execute('''
                     CREATE TABLE settings (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        is_dark_theme BOOLEAN DEFAULT 1
+                        is_dark_theme BOOLEAN DEFAULT 1,
+                        language TEXT DEFAULT 'en'
                     )
                 ''')
-                cursor.execute('INSERT INTO settings (is_dark_theme) VALUES (1)')
+                cursor.execute('INSERT INTO settings (is_dark_theme, language) VALUES (1, "en")')
                 conn.commit()
             logging.info("Database initialized with default settings.")
         else:
@@ -38,3 +39,19 @@ class SettingsDB:
             cursor.execute('UPDATE settings SET is_dark_theme = ? WHERE id = 1', (1 if is_dark_theme else 0,))
             conn.commit()
             logging.info(f"Dark theme setting updated to: {is_dark_theme}")
+
+    @staticmethod
+    def get_language() -> str:
+        with sqlite3.connect(SettingsDB.DB_FILE) as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT language FROM settings WHERE id = 1')
+            result = cursor.fetchone()
+            return result[0] if result else 'en'
+
+    @staticmethod
+    def set_language(language: str):
+        with sqlite3.connect(SettingsDB.DB_FILE) as conn:
+            cursor = conn.cursor()
+            cursor.execute('UPDATE settings SET language = ? WHERE id = 1', (language,))
+            conn.commit()
+            logging.info(f"Language setting updated to: {language}")
