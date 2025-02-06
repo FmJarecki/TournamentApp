@@ -1,0 +1,1 @@
+To run locally: "uvicorn data_server:app --host 0.0.0.0 --reload"

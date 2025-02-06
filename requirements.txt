@@ -1,8 +1,0 @@
-kivy
-buildozer
-fastapi
-uvicorn
-requests
-pydantic
-setuptools
-cython

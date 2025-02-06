@@ -7,7 +7,7 @@ package.domain = org.example
 
 version = 1.0.0
 
-source.dir = TournamentApp/src
+source.dir = src
 
 icon.filename = data/app_icon.png
 
