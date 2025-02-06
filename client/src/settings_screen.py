@@ -33,7 +33,7 @@ class SettingsScreen(Screen):
                                   else f"{BRIGHT_IMAGES_PATH}/back_arrow.png")
         self.back_button = IconButton(
             self.handle_back,
-            icon_x_pos=0.2,
+            icon_x_pos=0.3,
             icon_path=back_button_icon_path,
         )
 

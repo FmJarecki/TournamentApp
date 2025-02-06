@@ -2,6 +2,8 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
+from kivy.uix.widget import Widget
+from kivy.uix.button import Button
 
 from players_layout import PlayersTable
 from icon_button import IconButton
@@ -15,11 +17,23 @@ class TeamScreen(Screen):
         self.team_name = team_name
         self.screen_layout = BoxLayout(orientation='vertical')
 
+        top_layout = BoxLayout(orientation='horizontal', size_hint_y=0.25)
+        back_button_icon_path = (f"{DARK_IMAGES_PATH}/back_arrow.png" if App.get_running_app().is_dark_theme
+                                  else f"{BRIGHT_IMAGES_PATH}/back_arrow.png")
+        back_button = IconButton(
+            self.handle_back,
+            icon_x_pos=0.3,
+            icon_path=back_button_icon_path,
+            size_hint_x=0.1
+        )
+        top_layout.add_widget(back_button)
         team_icon = Image(
             source=f"{IMAGES_PATH}/club_logo.png",
-            size_hint_y=0.25,
+            size_hint_x=0.8
         )
-        self.screen_layout.add_widget(team_icon)
+        top_layout.add_widget(team_icon)
+        top_layout.add_widget(Widget(size_hint_x=0.1))
+        self.screen_layout.add_widget(top_layout)
 
         options_layout = BoxLayout(
             size_hint_y=0.05,
@@ -54,3 +68,7 @@ class TeamScreen(Screen):
 
     def on_info_press(self, instance):
         print('info')
+
+    def handle_back(self, instance: Button):
+        self.parent.remove_widget(self)
+        self.parent.current = 'matches'
