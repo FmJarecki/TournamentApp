@@ -61,7 +61,7 @@ class MatchesScreen(Screen):
             for child in self.layout.children:
                 if isinstance(child, MatchLayout):
                     if child.team_1_icon.collide_point(*touch.pos):
-                            self._handle_team_selection(self._matches[self._match_iter]['teams'][0])
+                        self._handle_team_selection(self._matches[self._match_iter]['teams'][0])
                         return True
                     elif child.team_2_icon.collide_point(*touch.pos):
                         self._handle_team_selection(self._matches[self._match_iter]['teams'][1])
