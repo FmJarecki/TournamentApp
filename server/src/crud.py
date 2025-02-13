@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
@@ -9,14 +10,14 @@ from models import Player, Team, Match
 
 
 def add_player(db: Session, player: Player):
-    team = db.query(TeamModel).filter_by(name=player.team).first()
+    team = db.query(TeamModel).filter_by(id=player.team_id).first()
     if not team:
         raise HTTPException(status_code=400, detail="Team does not exist")
 
     db_player = PlayerModel(
         name=player.name,
         number=player.number,
-        team_name=player.team,
+        team_id=player.team_id,
         position=player.position.value,
         is_starting=player.is_starting,
         goals=player.goals
@@ -52,19 +53,22 @@ def add_team(db: Session, team: Team):
 
 
 def add_match(db: Session, match: Match):
-    for team_name in match.teams:
-        team = db.query(TeamModel).filter_by(name=team_name).first()
-        if not team:
-            raise HTTPException(status_code=400, detail=f"Team '{team_name}' does not exist")
+    team1 = db.query(TeamModel).filter_by(id=match.team1_id).first()
+    team2 = db.query(TeamModel).filter_by(id=match.team2_id).first()
+    if not team1 or not team2:
+        raise HTTPException(status_code=400, detail="One or both teams do not exist")
 
     db_match = MatchModel(
         round=match.round,
-        teams=match.teams,
-        scores=match.scores,
+        team1_id=match.team1_id,
+        team2_id=match.team2_id,
+        score1=match.score1,
+        score2=match.score2,
         date=match.date,
         stadium=match.stadium,
         localization=list(match.localization),
-        scorers=match.scorers
+        scorers1=match.scorers1,
+        scorers2=match.scorers2
     )
 
     try:
@@ -72,8 +76,8 @@ def add_match(db: Session, match: Match):
         db.commit()
         db.refresh(db_match)
 
-        for team_name in match.teams:
-            update_team_stats(db, team_name)
+        update_team_stats(db, match.team1_id)
+        update_team_stats(db, match.team2_id)
 
         return {"message": "Match added successfully"}
     except IntegrityError:
@@ -81,22 +85,27 @@ def add_match(db: Session, match: Match):
         raise HTTPException(status_code=400, detail="Error adding match")
 
 
-def update_team_stats(db: Session, team_name: str):
-    team = db.query(TeamModel).filter_by(name=team_name).first()
+def update_team_stats(db: Session, team_id: int):
+    team = db.query(TeamModel).filter_by(id=team_id).first()
     team.total_goals = 0
     team.conceded_goals = 0
     team.points = 0
 
-    matches = db.query(MatchModel).filter(MatchModel.teams.contains(team_name)).all()
+    matches = db.query(MatchModel).filter(
+        or_(MatchModel.team1_id == team_id, MatchModel.team2_id == team_id)
+    ).all()
 
     for match in matches:
-        match_datetime = datetime.fromisoformat(match.date)
+        match_datetime = datetime.strptime(match.date, "%Y-%m-%d %H:%M")
         now = datetime.now()
 
         if match_datetime <= now:
-            team_index = match.teams.index(team_name)
-            scored_goals = match.scores[team_index]
-            conceded_goals = sum(match.scores) - scored_goals
+            if match.team1_id == team_id:
+                scored_goals = match.score1
+                conceded_goals = match.score2
+            else:
+                scored_goals = match.score2
+                conceded_goals = match.score1
 
             team.total_goals += scored_goals
             team.conceded_goals += conceded_goals

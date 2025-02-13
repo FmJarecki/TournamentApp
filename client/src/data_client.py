@@ -39,8 +39,8 @@ def get_all_teams() -> list[dict]:
     return fetch_data("teams")
 
 
-def get_team(team_name: str) -> dict:
-    return fetch_data(f"teams/name/{team_name}")
+def get_team(team_id: str) -> dict:
+    return fetch_data(f"teams/{team_id}")
 
 
 def get_all_players_from_team(team_name: str) -> list[dict]:

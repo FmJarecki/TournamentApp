@@ -1,5 +1,4 @@
-from pydantic import BaseModel, Field, field_validator, model_validator
-from typing import List
+from pydantic import BaseModel, Field, field_validator
 from config import Position
 from datetime import datetime
 
@@ -7,7 +6,7 @@ from datetime import datetime
 class Player(BaseModel):
     name: str
     number: int = Field(..., ge=1, le=99)
-    team: str
+    team_id: int
     position: Position
     is_starting: bool
     goals: int = 0
@@ -23,12 +22,15 @@ class Team(BaseModel):
 
 class Match(BaseModel):
     round: int
-    teams: List[str]
-    scores: List[int]
+    team1_id: int
+    team2_id: int
+    score1: int
+    score2: int
     date: str
     stadium: str
     localization: tuple[float, float]
-    scorers: dict[str, list[dict[str, dict]]]
+    scorers1: list[dict[str, dict]]
+    scorers2: list[dict[str, dict]]
 
     @field_validator('date')
     def validate_date(cls, v):
@@ -37,11 +39,3 @@ class Match(BaseModel):
         except ValueError:
             raise ValueError("Date must be in ISO format (%Y-%m-%d %H:%M)")
         return v
-
-    @model_validator(mode="before")
-    def check_teams_and_scores(cls, values):
-        teams = values.get("teams", [])
-        scores = values.get("scores", [])
-        if len(teams) != len(scores):
-            raise ValueError("Number of teams must match number of scores")
-        return values

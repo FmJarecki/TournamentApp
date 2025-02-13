@@ -2,6 +2,7 @@ from faker import Faker
 import random
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from database import SessionLocal, PlayerModel, TeamModel, MatchModel
 from models import Player, Team, Match
 from database import Base, engine
@@ -46,44 +47,52 @@ def generate_fake_matches():
 
                     localization = (random.uniform(-90, 90), random.uniform(-180, 180))
 
-                    scorers = {}
+                    scorers1 = []
+                    scorers2 = []
                     if is_past_match:
-                        scorers[team1.name] = generate_scorers(db, team1, score1)
-                        scorers[team2.name] = generate_scorers(db, team2, score2)
+                        scorers1 = generate_scorers(db, team1, score1)
+                        scorers2 = generate_scorers(db, team2, score2)
 
                     match = Match(
                         round=1,
-                        teams=[team1.name, team2.name],
-                        scores=[score1, score2],
+                        team1_id=team1.id,
+                        team2_id=team2.id,
+                        score1=score1,
+                        score2=score2,
                         date=date.strftime("%Y-%m-%d %H:%M"),
                         stadium=fake.city() + " Stadium",
                         localization=localization,
-                        scorers=scorers
+                        scorers1=scorers1,
+                        scorers2=scorers2
                     )
 
                     db_match = MatchModel(
                         round=match.round,
-                        teams=match.teams,
-                        scores=match.scores,
+                        team1_id=match.team1_id,
+                        team2_id=match.team2_id,
+                        score1=match.score1,
+                        score2=match.score2,
                         date=match.date,
                         stadium=match.stadium,
                         localization=list(match.localization),
-                        scorers=match.scorers
+                        scorers1=match.scorers1,
+                        scorers2=match.scorers2
                     )
                     db.add(db_match)
                     db.commit()
 
                     if is_past_match:
-                        update_team_stats(db, team1.name)
-                        update_team_stats(db, team2.name)
+                        update_team_stats(db, team1.id)
+                        update_team_stats(db, team2.id)
 
     finally:
         db.close()
 
+
 def generate_scorers(db: Session, team: TeamModel, goals: int) -> list[dict[str, dict]]:
     scorers = []
 
-    players = db.query(PlayerModel).filter_by(team_name=team.name).all()
+    players = db.query(PlayerModel).filter_by(team_id=team.id).all()
 
     for _ in range(goals):
         player = random.choice(players)
@@ -93,21 +102,27 @@ def generate_scorers(db: Session, team: TeamModel, goals: int) -> list[dict[str,
     db.commit()
     return scorers
 
-def update_team_stats(db: Session, team_name: str):
-    team = db.query(TeamModel).filter_by(team_name=team_name).first()
+
+def update_team_stats(db: Session, team_id: int):
+    team = db.query(TeamModel).filter_by(id=team_id).first()
     if not team:
         return
 
-    matches = db.query(MatchModel).filter(MatchModel.teams.contains(team_name)).all()
+    matches = db.query(MatchModel).filter(
+        or_(MatchModel.team1_id == team_id, MatchModel.team2_id == team_id)
+    ).all()
 
     for match in matches:
         match_datetime = datetime.strptime(match.date, "%Y-%m-%d %H:%M")
         now = datetime.now()
 
         if match_datetime <= now:
-            team_index = match.teams.index(team_name)
-            scored_goals = match.scores[team_index]
-            conceded_goals = sum(match.scores) - scored_goals
+            if match.team1_id == team_id:
+                scored_goals = match.score1
+                conceded_goals = match.score2
+            else:
+                scored_goals = match.score2
+                conceded_goals = match.score1
 
             team.total_goals += scored_goals
             team.conceded_goals += conceded_goals
@@ -129,7 +144,8 @@ def generate_fake_team(name: str) -> Team:
         group=random.choice(["A", "B", "C", "D"])
     )
 
-def generate_fake_player(team_name: str, used_numbers: set) -> Player:
+
+def generate_fake_player(team_id: int, used_numbers: set) -> Player:
     while True:
         number = random.randint(1, 99)
         if number not in used_numbers:
@@ -139,11 +155,12 @@ def generate_fake_player(team_name: str, used_numbers: set) -> Player:
     return Player(
         name=fake.last_name(),
         number=number,
-        team=team_name,
+        team_id=team_id,
         position=random.choice(POSITIONS),
         is_starting=False,
         goals=random.randint(0, 10)
     )
+
 
 def generate_fake_data(player_per_team: int, number_of_teams: int, starting_players: int):
     db = SessionLocal()
@@ -178,14 +195,14 @@ def generate_fake_data(player_per_team: int, number_of_teams: int, starting_play
 
                 players = []
                 for _ in range(player_per_team):
-                    player = generate_fake_player(team_name, used_numbers)
+                    player = generate_fake_player(db_team.id, used_numbers)
                     players.append(player)
 
                 for player in players:
                     db_player = PlayerModel(
                         name=player.name,
                         number=player.number,
-                        team_name=player.team,
+                        team_id=player.team_id,
                         position=player.position,
                         is_starting=player.is_starting,
                         goals=player.goals
@@ -198,12 +215,12 @@ def generate_fake_data(player_per_team: int, number_of_teams: int, starting_play
                 for player in starting_players_list:
                     db_player = db.query(PlayerModel).filter(
                         PlayerModel.name == player.name,
-                        PlayerModel.team_name == team_name,
+                        PlayerModel.team_id == db_team.id,
                         PlayerModel.number == player.number
                     ).first()
 
                     if db_player is None:
-                        print(f"Player not found: {player.name} (Number: {player.number}, Team: {team_name})")
+                        print(f"Player not found: {player.name} (Number: {player.number}, Team ID: {db_team.id})")
                         continue
 
                     db_player.is_starting = True
@@ -211,6 +228,7 @@ def generate_fake_data(player_per_team: int, number_of_teams: int, starting_play
 
     finally:
         db.close()
+
 
 Base.metadata.create_all(bind=engine)
 

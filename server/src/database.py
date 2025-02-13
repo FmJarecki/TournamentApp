@@ -1,9 +1,9 @@
 import os
-from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, ForeignKey, JSON
+from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, ForeignKey, JSON, ARRAY
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, relationship
 
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///soccer_management.db')
-engine = create_engine(DATABASE_URL, connect_args={'check_same_thread': False} if 'sqlite' in DATABASE_URL else {})
+DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://admin:admin@localhost:5432/tournament_db')
+engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 class Base(DeclarativeBase):
@@ -16,7 +16,7 @@ class PlayerModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     number = Column(Integer)
-    team_name = Column(String, ForeignKey('teams.name'))
+    team_id = Column(Integer, ForeignKey('teams.id'))
     position = Column(String)
     is_starting = Column(Boolean)
     goals = Column(Integer, default=0)
@@ -27,7 +27,8 @@ class PlayerModel(Base):
 class TeamModel(Base):
     __tablename__ = 'teams'
 
-    name = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True)
     total_goals = Column(Integer, default=0)
     conceded_goals = Column(Integer, default=0)
     points = Column(Integer, default=0)
@@ -41,12 +42,18 @@ class MatchModel(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     round = Column(Integer)
-    teams = Column(JSON)
-    scores = Column(JSON)
+    team1_id = Column(Integer, ForeignKey('teams.id'))
+    team2_id = Column(Integer, ForeignKey('teams.id'))
+    score1 = Column(Integer)
+    score2 = Column(Integer)
     date = Column(String)
     stadium = Column(String)
     localization = Column(JSON)
-    scorers = Column(JSON)
+    scorers1 = Column(ARRAY(JSON))
+    scorers2 = Column(ARRAY(JSON))
+
+    team1 = relationship("TeamModel", foreign_keys=[team1_id])
+    team2 = relationship("TeamModel", foreign_keys=[team2_id])
 
 
 def get_db():

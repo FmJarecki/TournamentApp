@@ -31,7 +31,7 @@ class MatchesScreen(Screen):
         self.layout.clear_widgets()
         match = self._matches[self._match_iter]
         self.layout.add_widget(MatchLayout(match, size_hint=(1, 0.4)))
-        groups: list[str] = [get_team(match["teams"][0])["group"], get_team(match["teams"][1])["group"]]
+        groups: list[str] = [get_team(match["team1_id"])["group"], get_team(match["team2_id"])["group"]]
         self.layout.add_widget(PointsTable(groups=groups, size_hint=(1, 0.6)))
 
     def on_touch_down(self, touch):
@@ -61,7 +61,7 @@ class MatchesScreen(Screen):
             for child in self.layout.children:
                 if isinstance(child, MatchLayout):
                     if child.team_1_icon.collide_point(*touch.pos):
-                        self._handle_team_selection(self._matches[self._match_iter]['teams'][0])
+                            self._handle_team_selection(self._matches[self._match_iter]['teams'][0])
                         return True
                     elif child.team_2_icon.collide_point(*touch.pos):
                         self._handle_team_selection(self._matches[self._match_iter]['teams'][1])
@@ -130,7 +130,7 @@ class MatchLayout(BoxLayout):
         bottom_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.2))
         if match_date < now:
             team_1_score = Label(
-                text=f"[b][color={text_color}]{match['scores'][0]}[/color][/b]",
+                text=f"[b][color={text_color}]{match['score1']}[/color][/b]",
                 markup=True,
                 font_size='25sp',
                 size_hint=(0.45, 1)
@@ -146,7 +146,7 @@ class MatchLayout(BoxLayout):
             bottom_layout.add_widget(score_separator)
 
             team_2_score = Label(
-                text=f"[b][color={text_color}]{match['scores'][1]}[/color][/b]",
+                text=f"[b][color={text_color}]{match['score2']}[/color][/b]",
                 markup=True,
                 font_size='25sp',
                 size_hint=(0.45, 1)

@@ -27,9 +27,9 @@ def get_teams(db: Session = Depends(get_db)):
     return db.query(TeamModel).all()
 
 
-@app.get("/teams/name/{team_name}")
-def get_team(team_name: str, db: Session = Depends(get_db)):
-    team = db.query(TeamModel).filter_by(name=team_name).first()
+@app.get("/teams/{team_id}")
+def get_team(team_id: str, db: Session = Depends(get_db)):
+    team = db.query(TeamModel).filter_by(id=team_id).first()
     if not team:
         raise HTTPException(status_code=404, detail="Team not found")
     return team
