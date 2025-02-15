@@ -3,13 +3,19 @@ from datetime import datetime
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
 
+
+from auth import get_current_admin
 from database import PlayerModel, TeamModel, MatchModel
 from models import Player, Team, Match
 
 
-def add_player(db: Session, player: Player):
+def add_player(db: Session, player: Player, current_user: str = Depends(get_current_admin)):
+    if not current_user:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+
     team = db.query(TeamModel).filter_by(id=player.team_id).first()
     if not team:
         raise HTTPException(status_code=400, detail="Team does not exist")

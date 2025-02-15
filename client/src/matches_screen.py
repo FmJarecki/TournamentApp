@@ -61,10 +61,10 @@ class MatchesScreen(Screen):
             for child in self.layout.children:
                 if isinstance(child, MatchLayout):
                     if child.team_1_icon.collide_point(*touch.pos):
-                        self._handle_team_selection(self._matches[self._match_iter]['teams'][0])
+                        self._handle_team_selection(self._matches[self._match_iter]['team1_id'])
                         return True
                     elif child.team_2_icon.collide_point(*touch.pos):
-                        self._handle_team_selection(self._matches[self._match_iter]['teams'][1])
+                        self._handle_team_selection(self._matches[self._match_iter]['team2_id'])
                         return True
                 elif isinstance(child, PointsTable):
                     for table_row in child.rows:
@@ -74,8 +74,8 @@ class MatchesScreen(Screen):
         self.touch_start_pos = None
         return super().on_touch_up(touch)
 
-    def _handle_team_selection(self, team_data: str):
-        team_obj = TeamScreen(team_data, name="team")
+    def _handle_team_selection(self, team_id: int):
+        team_obj = TeamScreen(team_id, name="team")
         if self.parent.has_screen(team_obj.name):
             self.parent.remove_widget(self.parent.get_screen(team_obj.name))
         self.parent.add_widget(team_obj)

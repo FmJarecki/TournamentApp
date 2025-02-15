@@ -10,9 +10,9 @@ from data_client import get_all_players_from_team
 
 
 class PlayersTable(BoxLayout):
-    def __init__(self, team_name: str, **kwargs):
+    def __init__(self, team_id: int, **kwargs):
         super(PlayersTable, self).__init__(**kwargs)
-        self.players = get_all_players_from_team(team_name)
+        self.players = get_all_players_from_team(team_id)
         self.orientation = "vertical"
 
         self.scroll_view = ScrollView()

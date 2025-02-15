@@ -39,12 +39,12 @@ def get_all_teams() -> list[dict]:
     return fetch_data("teams")
 
 
-def get_team(team_id: str) -> dict:
+def get_team(team_id: int) -> dict:
     return fetch_data(f"teams/{team_id}")
 
 
-def get_all_players_from_team(team_name: str) -> list[dict]:
-    return fetch_data(f"teams/{team_name}/players")
+def get_all_players_from_team(team_id: int) -> list[dict]:
+    return fetch_data(f"teams/{team_id}/players")
 
 
 def get_teams_from_group(group: str) -> list[dict]:

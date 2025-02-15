@@ -20,7 +20,7 @@ class TeamOnFieldLayout(FloatLayout):
         Position.ST: {'x': 0, 'y': 0},
     }
 
-    def __init__(self, team_name: str, **kwargs):
+    def __init__(self, team_id: int, **kwargs):
         super().__init__(**kwargs)
         stadium = Image(
             source=f'{IMAGES_PATH}/stadium.png',
@@ -34,7 +34,7 @@ class TeamOnFieldLayout(FloatLayout):
         self.labels = []
         player_icon_path = f'{IMAGES_PATH}/shirt_blue.png'
 
-        for player in get_all_players_from_team(team_name):
+        for player in get_all_players_from_team(team_id):
             if player['is_starting']:
                 def make_callback(player_name: str, player_number: str):
                     return lambda x: self.on_player_press(player_name, player_number)
