@@ -1,7 +1,9 @@
+import os
 from datetime import timedelta
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session, joinedload
 
 from database import get_db, PlayerModel, TeamModel, MatchModel
@@ -56,6 +58,19 @@ def get_team_players(
     if not team:
         raise HTTPException(status_code=404, detail="Team not found")
     return team.players
+
+
+@app.get("/teams/{team_id}/logo")
+def get_team_logo(team_id: int, db: Session = Depends(get_db)) -> FileResponse:
+    team = db.query(TeamModel).filter_by(id=team_id).first()
+    if not team:
+        raise HTTPException(status_code=404, detail="Team not found")
+
+    logo_path: str = f"../data/logos/{team_id}.png"
+    if not os.path.exists(logo_path):
+        raise HTTPException(status_code=404, detail="Logo file not found")
+
+    return FileResponse(logo_path)
 
 
 @app.get("/matches/")

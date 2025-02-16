@@ -6,6 +6,7 @@ from kivy.uix.screenmanager import ScreenManager
 from home_screen import HomeScreen
 from settings_db import SettingsDB
 from text_manager import TextManager
+from data_client import download_logos
 
 
 def setup_logging():
@@ -40,6 +41,7 @@ class KVApp(App):
 if __name__ == '__main__':
     setup_logging()
     SettingsDB.initialize_database()
+    download_logos()
 
     app = KVApp(
         SettingsDB.get_dark_theme_setting(),

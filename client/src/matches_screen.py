@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from kivy.app import App
@@ -101,8 +102,9 @@ class MatchLayout(BoxLayout):
 
         teams_layout = BoxLayout(orientation='horizontal', size_hint=(1, 0.7))
 
+
         self.team_1_icon = Image(
-            source = f"{IMAGES_PATH}/club_logo.png",
+            source = self._get_team_logo(match['team1_id']),
             size_hint=(0.45, 1)
         )
         teams_layout.add_widget(self.team_1_icon)
@@ -117,7 +119,7 @@ class MatchLayout(BoxLayout):
         teams_layout.add_widget(vs_label)
 
         self.team_2_icon = Image(
-            source = f"{IMAGES_PATH}/club_logo_2.png",
+            source = self._get_team_logo(match['team2_id']),
             size_hint=(0.45, 1)
         )
         teams_layout.add_widget(self.team_2_icon)
@@ -162,3 +164,13 @@ class MatchLayout(BoxLayout):
             )
             bottom_layout.add_widget(location_label)
         self.add_widget(bottom_layout)
+
+
+    @staticmethod
+    def _get_team_logo(team_id: str) -> str:
+        source_path: str = f"{IMAGES_PATH}/logos/{team_id}.png"
+        if os.path.exists(source_path):
+            return source_path
+
+        else:
+            return f"{IMAGES_PATH}/logos/default.png"
